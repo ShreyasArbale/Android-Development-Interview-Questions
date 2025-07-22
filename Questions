@@ -1,0 +1,422 @@
+# Complete Android Interview Questions Collection
+
+## Android Platform & Architecture
+
+1. What is Android and explain its open-source nature?
+2. List all major Android versions and their key features.
+3. What are the main layers of Android architecture?
+4. Explain Android Runtime (ART) and its role in Android development.
+5. What are the differences between Dalvik and ART?
+6. Explain JIT (Just-In-Time) and AOT (Ahead-Of-Time) compilation in Android.
+7. What is an APK file and what components does it contain?
+8. Describe the Android build process and its main stages.
+9. What is a DEX file and its significance in Android?
+10. What languages are primarily used for Android development?
+11. What is the AndroidManifest.xml file and its purpose?
+12. What is the Android Native Development Kit (NDK) and when would you use it?
+13. Explain the concept of "Binder" in Android and its role in Inter-Process Communication (IPC).
+14. How does an Android app work internally from startup to execution?
+15. What is the Android Zygote process and its role in app launching?
+
+## Core Components
+
+16. What are the four main components of an Android application and their purposes?
+17. What is the Application class and when would you extend it?
+18. How do you register components in AndroidManifest.xml?
+19. What is the component lifecycle and how does Android manage it?
+20. Explain the concept of component activation and deactivation.
+
+## Activities
+
+21. Explain the complete Activity lifecycle with all callback methods.
+22. What's the difference between onCreate() and onStart()?
+23. Why is setContentView() typically called in onCreate()?
+24. When might onDestroy() be called without onPause() and onStop()?
+25. What is the purpose of onSaveInstanceState() and onRestoreInstanceState()?
+26. How does an Activity handle screen rotation and configuration changes?
+27. How can you preserve Activity state during configuration changes?
+28. Is it possible to create an Activity without a user interface?
+29. What happens when the system kills your app process?
+30. How do you handle Activity recreation scenarios?
+31. What is the difference between finish() and finishAffinity()?
+32. Explain task affinity and its impact on Activity behavior.
+
+## Launch Modes
+
+33. Explain different launch modes (standard, singleTop, singleTask, singleInstance).
+34. What's the difference between FLAG_ACTIVITY_CLEAR_TASK and FLAG_ACTIVITY_CLEAR_TOP?
+35. How do launch modes affect the back stack?
+36. When would you use singleInstance launch mode?
+37. What are Intent flags and how do they modify Activity behavior?
+38. How do you clear the back stack when launching a new Activity?
+
+## Fragments
+
+39. What is a Fragment and how does it differ from an Activity?
+40. Explain the Fragment lifecycle and its key callback methods.
+41. Which method is called only once in a Fragment lifecycle?
+42. What is the difference between onCreateView() and onViewCreated()?
+43. How do you communicate between Fragment and Activity?
+44. How do you communicate between two Fragments?
+45. What are retained Fragments and when are they useful?
+46. How do you handle back navigation within Fragments?
+47. Why use only default constructor for Fragments?
+48. How do you pass arguments to a Fragment safely?
+49. What's the difference between Fragment add() and replace() operations?
+50. What is FragmentManager and FragmentTransaction?
+51. How do you handle Fragment back stack?
+52. What are headless Fragments and their use cases?
+
+## Intents & Navigation
+
+53. What is an Intent and explain implicit vs explicit Intents with examples.
+54. What are Intent Filters and how do they work?
+55. How do you pass data between Activities using Intents?
+56. What is a PendingIntent and its common use cases?
+57. What is a Sticky Intent?
+58. How do you handle deep linking in Android?
+59. What are Intent actions and categories?
+60. How do you create custom Intent actions?
+61. What is the difference between startActivity() and startActivityForResult()?
+62. How do you handle Activity results with the new Activity Result API?
+63. What are scheme-based and app link deep links?
+64. How do you verify app links?
+
+## Services & Background Processing
+
+65. What is a Service and explain its lifecycle?
+66. What is the difference between started Service and bound Service?
+67. What is the difference between Service, IntentService, and JobIntentService?
+68. What are the differences between Service and Thread?
+69. How do you create and manage bound services?
+70. What is AIDL (Android Interface Definition Language)?
+71. How do you communicate between Service and Activity?
+72. What are foreground services and when to use them?
+73. What is WorkManager and its primary use cases?
+74. What is JobScheduler and how does it work?
+75. How does WorkManager guarantee task execution?
+76. What is the minimum repeat interval for PeriodicWorkRequest?
+77. How do you handle background tasks without draining battery?
+78. How would you detect user inactivity?
+79. What is Doze mode and App Standby?
+80. How does WorkManager differ from JobScheduler and AlarmManager?
+81. What are Worker, ListenableWorker, and CoroutineWorker?
+82. How do you chain work requests in WorkManager?
+
+## UI Components & Layouts
+
+83. What is the difference between View and ViewGroup?
+84. What is Toast in Android and how to display it?
+85. What is an Adapter and its purpose with RecyclerView?
+86. What are the differences between LinearLayout, RelativeLayout, and ConstraintLayout?
+87. When might you use a FrameLayout?
+88. Why is XML commonly used for Android UI layouts?
+89. What are dp, sp, and px units? When to use each?
+90. What is a Spannable and SpannableString?
+91. What is View Binding vs Data Binding?
+92. What is a Dialog and different types available?
+93. How do you create custom Views in Android?
+94. What is RecyclerView and how does it improve upon ListView?
+95. How do you optimize RecyclerView performance?
+96. What are ViewHolders and their importance?
+97. How do you handle item click events in RecyclerView?
+98. What is DiffUtil and how does it optimize RecyclerView updates?
+99. What are the different RecyclerView LayoutManagers?
+100. How do you implement pull-to-refresh functionality?
+101. What is CoordinatorLayout and its use cases?
+102. How do you implement sliding panels and collapsing toolbars?
+103. What are Motion Layouts and their advantages?
+104. How do you handle different screen sizes and orientations?
+
+## Data Storage & Persistence
+
+105. What are different ways to store data in Android?
+106. What is SharedPreferences and its pros and cons?
+107. What is the difference between commit() and apply() in SharedPreferences?
+108. What is SQLite and how is it used in Android?
+109. What is Room Persistence Library and why is it preferred?
+110. How can you encrypt data in Android applications?
+111. How does Room handle database migrations?
+112. How do you manage relationships in Room?
+113. What is DAO (Data Access Object) in Room?
+114. Explain Scoped Storage in Android and its implications.
+115. How can encrypted SharedPreferences be used?
+116. What is DataStore and how does it compare to SharedPreferences?
+117. What are best practices for storing application data securely?
+118. Can you access SQLite database for debugging?
+119. How do you handle database versioning and schema changes?
+120. What is Content Resolver and its role in data access?
+
+## Asynchronous Programming & Concurrency
+
+121. Why should long-running operations not be performed on main thread?
+122. What is ANR (Application Not Responding) and how to avoid it?
+123. What is a Thread in Android and how does it differ from Process?
+124. How do you perform background operations in Android?
+125. What are Kotlin Coroutines and their advantages?
+126. Explain the `suspend` keyword in Kotlin Coroutines.
+127. What is a CoroutineScope and why is it important?
+128. What is the difference between `launch` and `async`?
+129. What are Dispatchers (Main, IO, Default, Unconfined)?
+130. Explain Handler, Looper, and MessageQueue relationship.
+131. What is a HandlerThread and when is it useful?
+132. How does Garbage Collector work in Android?
+133. What is the onTrimMemory() method?
+134. Can you manually call Garbage Collection?
+135. Explain "structured concurrency" in Kotlin Coroutines.
+136. What is the difference between Thread and Coroutine?
+137. What are race conditions and deadlocks? How to prevent them?
+138. What are synchronization mechanisms available?
+139. What is a Thread Pool and its benefits?
+140. How do you ensure thread safety in Android?
+141. What is the relationship between AsyncTask and Activity problems?
+
+## Networking & Web Services
+
+142. How do Android apps make network requests?
+143. What is Retrofit and why is it popular?
+144. What is OkHttp and its role in networking?
+145. What are RESTful APIs and HTTP methods?
+146. What is JSON and why is it used for data exchange?
+147. How do you handle network errors and retries?
+148. What is a Multipart request and when is it used?
+149. How do you upload files using Retrofit?
+150. What is Gson and its purpose in JSON parsing?
+151. What is Volley Library in Android?
+152. Compare HTTP Long-Polling vs WebSockets vs Server-Sent Events.
+153. How would you debug server errors in POST requests?
+154. What are security considerations for network requests?
+155. What are benefits of network caching strategies?
+156. How do you implement offline-first architecture?
+157. What is Certificate Pinning and why is it important?
+
+## Architecture Patterns & Design
+
+158. What is Android Jetpack and its key benefits?
+159. What are Android Architecture Components?
+160. What is MVVM architecture and how does it work?
+161. Compare MVC vs MVP vs MVVM vs MVI architectures.
+162. What is Clean Architecture and its importance?
+163. What is MVI architecture and its core concepts?
+164. When might MVI be better than MVVM?
+165. Explain unidirectional data flow concept.
+166. What is the Repository pattern and its role?
+167. What is the role of Use Cases in Clean Architecture?
+168. How do you handle separation of concerns?
+169. What is Hexagonal Architecture?
+170. How do you implement the Observer pattern in Android?
+
+## ViewModel & LiveData
+
+171. What is ViewModel and its purpose?
+172. How does ViewModel help during configuration changes?
+173. What is LiveData and how does it help manage UI state?
+174. What is the difference between MutableLiveData and LiveData?
+175. What is LifecycleOwner and LifecycleObserver?
+176. What are Transformations in LiveData?
+177. What is MediatorLiveData and its use cases?
+178. How would you implement SingleLiveEvent?
+179. What is the difference between setValue() and postValue()?
+180. What is SavedStateHandle and its integration with ViewModel?
+181. How do you share ViewModel between Fragments?
+182. Do you write business logic in ViewModel?
+183. What is SharedViewModel in Android?
+184. How does ViewModel work internally?
+185. What is ViewModelProvider and ViewModelFactory?
+
+## Flow & Reactive Programming
+
+186. What is Flow in Kotlin?
+187. How does Flow compare to LiveData?
+188. What is the difference between StateFlow and SharedFlow?
+189. How to collect latest value in StateFlow in Activity?
+190. What are cold vs hot Flows?
+191. What are Flow operators and their types?
+192. How do you handle Flow exceptions?
+193. What is backpressure in reactive streams?
+194. How do you test Flows?
+195. What is the difference between Flows and Channels?
+196. How do you combine multiple Flows?
+197. What is Flow cancellation and cooperation?
+
+## Navigation Component
+
+198. What is the Navigation Component and its benefits?
+199. How do you set up Navigation Graph?
+200. How do you pass arguments between destinations?
+201. How do you handle conditional navigation?
+202. What are global actions in Navigation?
+203. How do you handle deep links with Navigation Component?
+204. How do you implement nested navigation graphs?
+205. How does Navigation Component handle the back stack?
+206. How do you navigate programmatically?
+207. How do you handle navigation in Jetpack Compose?
+
+## Dependency Injection
+
+208. What is Dependency Injection and its benefits?
+209. What is Inversion of Control?
+210. What is Dagger Hilt and what problem does it solve?
+211. How do you choose between Dagger 2 and Dagger-Hilt?
+212. What is a Component in Dagger?
+213. What is Module in Dagger?
+214. Explain @Inject, @Module, @Provides, @Component annotations.
+215. How does Dagger work internally?
+216. How does custom scope work in Dagger?
+217. What is a Qualifier in Dagger?
+218. How do you handle different scopes in Hilt?
+219. What are Dagger Subcomponents?
+220. How do you inject dependencies into Android components with Hilt?
+
+## Content Providers
+
+221. What is a Content Provider and its use cases?
+222. How is Content Provider implemented?
+223. How do you access data using Content Provider?
+224. What is Content Resolver?
+225. How do you secure Content Provider data?
+226. What are the methods you must implement in Content Provider?
+227. How do you notify observers of data changes?
+
+## Broadcast Receivers
+
+228. What are Broadcast Receivers and their types?
+229. How are BroadcastReceivers implemented?
+230. What is the difference between ordered and normal broadcasts?
+231. What are local broadcasts?
+232. How do you register BroadcastReceiver dynamically vs statically?
+233. What are the limitations of BroadcastReceiver?
+234. How do you handle priority in ordered broadcasts?
+
+## Permissions & Security
+
+235. What are Android permissions and their importance?
+236. Explain runtime permissions and how to request them?
+237. What are different protection levels?
+238. What is Cleartext traffic restriction?
+239. How do you secure API keys in Android apps?
+240. What is ProGuard/R8 and its importance?
+241. What is StrictMode and its uses?
+242. How does the Android security model work?
+243. What is code obfuscation and minification?
+244. How do you implement biometric authentication?
+245. What is Android Keystore and its benefits?
+
+## Performance & Optimization
+
+246. How can you reduce APK size?
+247. What are techniques to improve app performance?
+248. How to identify and fix OutOfMemory issues?
+249. How do you find memory leaks in applications?
+250. What is memory leak and prevention strategies?
+251. How to improve RecyclerView scrolling performance?
+252. How do you handle large datasets efficiently?
+253. How to measure method execution time?
+254. How do you ensure smooth animations?
+255. What troubleshooting techniques for crashing apps?
+256. How to reduce battery usage?
+257. How to improve app startup time?
+258. What profiling tools do you use?
+259. What is "jank" in UI and prevention methods?
+260. What is overdraw and how to minimize it?
+261. How do you optimize for different device configurations?
+262. What is App Startup library?
+
+## Testing
+
+263. What are different types of testing in Android?
+264. What is JUnit and how is it used?
+265. What is Mockito and its purpose?
+266. What is Espresso and when to use it?
+267. What's the difference between Unit and Instrumentation Tests?
+268. How do you mock dependencies for testing?
+269. How do you test ViewModel?
+270. What is Test-Driven Development (TDD)?
+271. How do you test Room database operations?
+272. How do you test Coroutines?
+273. What is UI Automator?
+274. How do you write integration tests?
+275. What is Code Coverage and how to measure it?
+
+## Jetpack Compose
+
+276. What is Jetpack Compose?
+277. What are differences between Compose and XML layouts?
+278. What are State and MutableState in Compose?
+279. How do you handle navigation in Compose?
+280. What is recomposition and how to optimize it?
+281. How do you handle side-effects in Compose?
+282. What are Composable functions?
+283. How do you manage state in Compose?
+284. What is remember and rememberSaveable?
+285. How do you handle lifecycle events in Compose?
+286. What are LaunchedEffect and DisposableEffect?
+287. How do you implement custom layouts in Compose?
+288. What is Modifier in Compose?
+289. How do you handle theming in Compose?
+290. What are Animation APIs in Compose?
+
+## Sensors & Hardware
+
+291. Explain Sensors in Android and related classes.
+292. How do you check if a specific sensor is present?
+293. How do you implement camera functionality?
+294. What's the difference between Bluetooth and BLE?
+295. How does Location Services work in Android?
+296. What are different location providers?
+297. How do you handle runtime location permissions?
+298. What is Geofencing and how to implement it?
+299. How do you work with device cameras (Camera API vs CameraX)?
+300. What are Media APIs in Android?
+
+## Notifications
+
+301. How does Android Push Notification system work?
+302. What is Firebase Cloud Messaging (FCM)?
+303. How to show local Notification at exact time?
+304. What are different types of notifications?
+305. How do you handle notification channels?
+306. How do you implement expandable notifications?
+307. What are notification groups?
+308. How do you handle notification actions?
+309. What is notification importance and priority?
+
+## Multi-Module Architecture
+
+310. What are benefits of Multi-Module Architecture?
+311. When would you adopt Multi-Module Project?
+312. How to manage versions in multi-module apps?
+313. How to handle circular dependencies?
+314. What are different types of modules?
+315. How do you share code between modules?
+316. What is Gradle Version Catalog?
+317. How do you handle feature modules?
+318. What are dynamic feature modules?
+
+## Localization & Internationalization
+
+319. What factors do you consider for app localization?
+320. How do you support multiple languages?
+321. What are best practices for handling dates?
+322. How do you handle different currencies and number formats?
+323. What is RTL (Right-to-Left) layout support?
+324. How do you test localized apps?
+325. What are locale-specific resources?
+
+## Advanced Topics
+
+326. How do you handle deep links comprehensively?
+327. What is the process lifecycle in Android?
+328. How does multi-window mode affect your app?
+329. What are considerations for Android Auto/TV/Wear?
+330. How do you implement app shortcuts and widgets?
+331. What are Android App Bundles and their benefits?
+332. How do you implement in-app updates?
+333. What are the steps to publish an app on Play Store?
+334. How do you handle feature flags or remote configuration?
+335. What are webhooks vs polling differences?
+336. How do you implement in-app purchases?
+337. What is Android Slice and its use cases?
+338. How do you handle app signing and security?
+339. What are Progressive Web Apps on Android?
+340. How do you optimize for foldable devices?
