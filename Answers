@@ -1,0 +1,667 @@
+## Android Platform & Architecture
+
+1.  **What is Android and explain its open-source nature?**
+    Android is an open-source, Linux-based operating system primarily designed for mobile devices like smartphones and tablets. Developed by Google and the Open Handset Alliance, its open-source nature means its source code is freely available to the public. This allows device manufacturers to customize it for their hardware and developers to build applications without licensing fees, fostering a diverse ecosystem, rapid innovation, and widespread adoption.
+
+2.  **List all major Android versions and their key features.**
+
+      * **Lollipop (5.0):** Introduced Material Design, ART as the default runtime, and revamped notifications.
+      * **Marshmallow (6.0):** Brought runtime permissions, Doze mode for battery optimization, and fingerprint API support.
+      * **Nougat (7.0):** Added multi-window support, improved notifications with direct reply, and Data Saver.
+      * **Oreo (8.0):** Introduced notification channels, Picture-in-Picture (PiP) mode, and autofill framework.
+      * **Pie (9):** Featured gesture navigation, Adaptive Battery, App Actions, and Slices.
+      * **Android 10:** Focused on privacy controls, introduced a system-wide dark theme, and enhanced gesture navigation.
+      * **Android 11:** Improved conversation notifications, chat bubbles, and one-time permissions.
+      * **Android 12:** Launched with Material You design language, redesigned widgets, and a Privacy Dashboard.
+      * **Android 13:** Introduced themed app icons, per-app language preferences, and a new photo picker.
+      * **Android 14:** Further refined predictive back gestures, offered more customizable lock screen options, and enhanced health connectivity features.
+
+3.  **What are the main layers of Android architecture?**
+    The Android architecture is typically described in five main layers, from bottom to top:
+
+      * **Linux Kernel:** The foundation, providing core system services like security, memory management, process management, and drivers.
+      * **Hardware Abstraction Layer (HAL):** An interface layer that standardizes how Android interacts with various hardware components, allowing Android to be hardware-agnostic.
+      * **Android Runtime (ART) & Native Libraries:** ART executes Android applications. Native libraries (like OpenGL ES, SQLite) provide essential functionalities for the system and apps.
+      * **Java API Framework:** The set of high-level Java/Kotlin APIs that developers use to build Android applications (e.g., Activity Manager, View System, Notification Manager).
+      * **Applications:** The top layer, including both pre-installed system applications (e.g., Phone, Contacts) and user-installed third-party applications.
+
+4.  **Explain Android Runtime (ART) and its role in Android development.**
+    Android Runtime (ART) is the managed runtime that executes Android applications, replacing Dalvik from Android 5.0 (Lollipop) onwards. Its primary role in development is to compile the app's DEX bytecode into native machine code using Ahead-Of-Time (AOT) compilation during installation. This results in significant improvements in app startup time, overall runtime performance, and battery efficiency, leading to a smoother user experience. It also offers enhanced debugging capabilities.
+
+5.  **What are the differences between Dalvik and ART?**
+    The main differences lie in their compilation strategies:
+
+      * **Dalvik:** Used Just-In-Time (JIT) compilation. App bytecode was compiled into machine code on-the-fly during app execution. This led to faster app installation but slower app startup and generally lower runtime performance due to continuous compilation.
+      * **ART:** Primarily uses Ahead-Of-Time (AOT) compilation. App bytecode is compiled into native machine code during app installation. This results in slower installation and larger app sizes (due to stored native code) but provides much faster app startup times and significantly smoother runtime performance. ART also features a more efficient garbage collector.
+
+6.  **Explain JIT (Just-In-Time) and AOT (Ahead-Of-Time) compilation in Android.**
+
+      * **JIT (Just-In-Time) Compilation:** In this model (primarily used by Dalvik), the app's bytecode is compiled into native machine code at runtime, just before a method or code block is executed. Once compiled, the native code can be cached for future use.
+      * **AOT (Ahead-Of-Time) Compilation:** In this model (primarily used by ART), the entire app's bytecode is compiled into native machine code *before* the app is launched, typically during its installation. This pre-compiled native code is then directly executed, leading to better performance and battery efficiency at runtime. ART often employs a hybrid approach, using JIT for dynamic code or if AOT compilation is not feasible.
+
+7.  **What is an APK file and what components does it contain?**
+    An APK (Android Package Kit) file is the package file format used by the Android operating system for the distribution and installation of mobile applications. It's essentially a compressed archive, similar to a .zip file, containing all the elements an Android app needs to install and run correctly.
+    Key components typically include:
+
+      * `AndroidManifest.xml`: Declares the app's components, permissions, and features.
+      * `classes.dex`: Contains the compiled Java/Kotlin code (DEX bytecode).
+      * `resources.arsc`: Compiled binary resources (strings, colors, styles, etc.).
+      * `res/`: Raw, uncompiled resources like images, layouts, and XML files.
+      * `assets/`: Raw asset files copied directly into the app's file system.
+      * `lib/`: Compiled native libraries (.so files) for different CPU architectures.
+      * `META-INF/`: Contains signature and manifest information for integrity verification.
+
+8.  **Describe the Android build process and its main stages.**
+    The Android build process transforms your source code and resources into a deployable APK file. The main stages are:
+
+    1.  **Resource Compilation (aapt2):** The Android Asset Packaging Tool (aapt2) compiles your app's resources (`res/`) and `AndroidManifest.xml`, generating resource IDs and the `R.java` (or `R.kt`) file.
+    2.  **Java/Kotlin Compilation:** Your `.java` or `.kt` source code files are compiled into Java bytecode (`.class` files) by `javac` or `kotlinc`.
+    3.  **DEX Conversion (D8/R8):** The Java bytecode (`.class` files) is converted into Dalvik Executable (DEX) bytecode (`.dex` files) by the D8 compiler (or R8 for more advanced shrinking/obfuscation). DEX files are optimized for the Android Runtime.
+    4.  **APK Packaging:** All the compiled assets (`.dex` files, compiled resources, native libraries, `AndroidManifest.xml`, etc.) are packaged into a single `.apk` archive.
+    5.  **Signing:** The APK is digitally signed with a certificate (debug for development, release for production) to verify its authenticity and ensure it hasn't been tampered with.
+    6.  **Zipalign (for release builds):** This optional but highly recommended step optimizes the APK by aligning uncompressed data, allowing efficient memory mapping at runtime and reducing RAM consumption.
+
+9.  **What is a DEX file and its significance in Android?**
+    A DEX (Dalvik Executable) file is the executable file format that contains the compiled bytecode of an Android application. This bytecode is what the Android Runtime (ART) or Dalvik Virtual Machine (for older Android versions) executes. Its significance lies in:
+
+      * **Execution Core:** It's the central binary component; without it, an Android app cannot run.
+      * **Optimization for Mobile:** DEX files are optimized for efficiency and compactness, crucial for devices with limited resources.
+      * **Interoperability:** It allows Java/Kotlin code to run on the Android platform regardless of the underlying device hardware, as long as a compatible runtime exists.
+      * **Multidex:** Supports applications with a large number of methods by allowing multiple DEX files.
+
+10. **What languages are primarily used for Android development?**
+    The two primary languages for Android development are:
+
+      * **Kotlin:** Google's preferred modern language for Android development. It's concise, null-safe, offers coroutines for asynchronous programming, and is fully interoperable with Java.
+      * **Java:** The traditional and widely used language for Android development. It's an object-oriented language that forms the foundation of the Android framework.
+        Additionally, **C/C++** can be used via the Android Native Development Kit (NDK) for performance-critical components.
+
+11. **What is the AndroidManifest.xml file and its purpose?**
+    The `AndroidManifest.xml` file is a fundamental XML file located at the root of every Android application project. It acts as a descriptor for the Android system, providing essential information about the application, its components, and its requirements.
+    Its purpose is to declare:
+
+      * All application components (Activities, Services, Broadcast Receivers, Content Providers).
+      * Permissions the app requires to access system resources or other app data (e.g., internet, camera).
+      * Hardware and software features the app needs (e.g., camera, OpenGL ES version).
+      * The minimum and target API levels.
+      * Application metadata like its icon, label, and theme.
+      * Intent Filters, which specify what types of Intents a component can respond to, making them discoverable.
+
+12. **What is the Android Native Development Kit (NDK) and when would you use it?**
+    The Android Native Development Kit (NDK) is a toolset that allows Android developers to implement parts of their application using native-code languages like C and C++. These native components are compiled into shared libraries (`.so` files) that can be included in the APK.
+    You would use the NDK in specific scenarios where native code offers significant advantages:
+
+      * **Performance-Critical Tasks:** For computationally intensive operations like complex algorithms, game engines, physics simulations, or advanced audio/video processing.
+      * **Reusing Existing Native Code:** If you have an existing C/C++ codebase or a third-party library that you want to integrate into your Android app.
+      * **Direct Hardware Access:** In rare cases requiring closer interaction with hardware that isn't fully exposed through Java APIs.
+        For most standard app development, Java or Kotlin is sufficient and more efficient.
+
+13. **Explain the concept of "Binder" in Android and its role in Inter-Process Communication (IPC).**
+    "Binder" is Android's core, high-performance Inter-Process Communication (IPC) mechanism. It's fundamental because Android apps run in isolated Linux processes. Binder enables different processes to communicate by allowing a client process to invoke methods on an object (a service) that resides in a different, remote process as if it were a local object.
+    Its role in IPC involves:
+
+      * **Client-Server Model:** A server process exposes an interface (a Binder object), and client processes communicate with it.
+      * **Kernel Driver:** At its core, Binder is a Linux kernel driver that efficiently handles the marshalling (packaging) and unmarshalling (unpacking) of data and method calls between the client and server processes' memory spaces.
+      * **System Services:** Most core Android system services (e.g., ActivityManagerService, PackageManagerService) expose their functionalities through Binder interfaces, allowing applications to interact with the system.
+
+14. **How does an Android app work internally from startup to execution?**
+    When an app icon is tapped:
+
+    1.  The Launcher sends an `Intent` to the `ActivityManagerService` (AMS) to start the app's main Activity.
+    2.  AMS checks if the app's process exists. If not, it requests the `Zygote` process to fork a new child process for the app.
+    3.  The new app process creates its own Android Runtime (ART) instance and starts the `ActivityThread` (the app's main UI thread).
+    4.  The `Application` class (if extended) is instantiated, and its `onCreate()` method is called for global initialization.
+    5.  AMS instructs the `ActivityThread` to launch the requested `Activity`. The `Activity` instance is created, and its `onCreate()`, `onStart()`, and `onResume()` lifecycle methods are called in sequence, setting up and displaying the UI.
+    6.  The app's main thread then enters an event loop (`Looper` and `Handler`), continuously processing UI events (user input, drawing) and system messages, ensuring the UI remains responsive.
+
+15. **What is the Android Zygote process and its role in app launching?**
+    The Android Zygote process is a special, pre-initialized daemon process that starts when the Android system boots up. Its name, "Zygote," signifies its role as a "parent" from which all other application processes are "forked."
+    Its role in app launching is crucial for efficiency:
+
+      * **Pre-initialization:** Zygote creates a new ART/Dalvik VM and pre-loads all common Android framework classes and resources into memory.
+      * **Faster App Startup:** When a new app needs to be launched, the `ActivityManagerService` instructs Zygote to `fork()` a new child process. This child process inherits the pre-initialized VM and loaded classes via a "copy-on-write" mechanism.
+      * **Memory Efficiency:** By sharing common framework code and resources, Zygote significantly reduces the memory footprint of individual app processes and dramatically speeds up application launch times compared to starting a new VM from scratch for every app.
+
+## Core Components
+
+16. **What are the four main components of an Android application and their purposes?**
+    The four main components are fundamental building blocks of an Android app:
+
+      * **Activities:** Represent a single screen with a user interface. They are the primary point of interaction for users and handle UI and user input.
+      * **Services:** Perform long-running operations in the background, without a user interface. They are used for tasks like playing music, downloading files, or data synchronization.
+      * **Broadcast Receivers:** Components that allow an application to listen for and respond to system-wide broadcast announcements (e.g., low battery, incoming SMS) or custom broadcasts from other apps.
+      * **Content Providers:** Manage access to a structured set of data. They provide a standard interface for applications to query, insert, update, or delete data, and are primarily used for securely sharing data between different applications.
+
+17. **What is the Application class and when would you extend it?**
+    The `Application` class is the base class for maintaining global application state across all components of your app. A single instance of this class exists for the entire lifetime of your application process.
+    You would extend the `Application` class when you need to perform:
+
+      * **Global, One-Time Initializations:** Setting up third-party libraries (e.g., analytics, crash reporting), initializing databases (like Room), or configuring global services that need to be ready as soon as the app process starts.
+      * **Managing Global State:** Storing data or objects that need to be accessible across different activities, services, or fragments, though for most data, architectural components like `ViewModel` or a dedicated data layer are often preferred.
+      * **Registering for Application-Level Callbacks:** Observing activity lifecycle changes across your entire app using `ActivityLifecycleCallbacks`.
+
+18. **How do you register components in AndroidManifest.xml?**
+    All four main Android components must be declared in the `AndroidManifest.xml` file within the `<application>` tag.
+
+      * **Activities:** Using the `<activity>` tag (e.g., `<activity android:name=".MainActivity" android:exported="true">`).
+      * **Services:** Using the `<service>` tag (e.g., `<service android:name=".MyService" android:exported="false">`).
+      * **Broadcast Receivers:** Using the `<receiver>` tag (e.g., `<receiver android:name=".MyReceiver" android:exported="true">`).
+      * **Content Providers:** Using the `<provider>` tag (e.g., `<provider android:name=".MyContentProvider" android:authorities="com.example.myapp.provider" android:exported="false">`).
+        Each declaration typically includes the `android:name` attribute specifying the fully qualified class name, and often `android:exported` and `intent-filter` elements to define their availability and respond to `Intent`s.
+
+19. **What is the component lifecycle and how does Android manage it?**
+    The component lifecycle refers to the various states an Android application component (like an Activity, Fragment, or Service) can transition through from its instantiation to its destruction. Android manages these lifecycles strictly to ensure resource efficiency and maintain system stability.
+    Android manages lifecycles through:
+
+      * **Callback Methods:** When a component's state changes (e.g., it comes to the foreground, goes to the background, or is destroyed), the system invokes specific callback methods (e.g., `onCreate()`, `onStart()`, `onPause()`, `onDestroy()`) on that component.
+      * **System Decisions:** The Android system makes decisions about component state based on user interaction, resource availability (e.g., low memory), and other system events. Developers override these callback methods to perform appropriate actions (setup, cleanup, saving state) at each lifecycle stage.
+
+20. **Explain the concept of component activation and deactivation.**
+
+      * **Activation:** Refers to a component becoming ready for user interaction or actively performing its intended function. For an Activity, this means it's in the foreground, visible, and able to receive user input, typically corresponding to reaching the `onResume()` state. For a Service, it means it's running and performing its background task.
+      * **Deactivation:** Refers to a component moving out of the active state, either by becoming obscured, moving to the background, or stopping its primary function. For an Activity, this could mean entering `onPause()` (partially obscured) or `onStop()` (fully hidden). For a Service, it might involve being unbound or stopped. Deactivation often prompts resource release to save battery and memory.
+
+## Activities
+
+21. **Explain the complete Activity lifecycle with all callback methods.**
+    The Activity lifecycle describes the sequence of states an Activity goes through. Here are the main callback methods:
+
+      * `onCreate(Bundle savedInstanceState)`: Called once when the activity is first created. Perform static setup like `setContentView()`, view bindings, and initial data loading.
+      * `onStart()`: Called when the activity becomes visible to the user.
+      * `onResume()`: Called when the activity is in the foreground and the user can interact with it. This is where you typically start animations, acquire exclusive device access (e.g., camera).
+      * `onPause()`: Called when the activity is partially obscured or about to lose user focus (e.g., a dialog appears, another activity comes to foreground). Save any unsaved user data here and stop CPU-intensive work.
+      * `onStop()`: Called when the activity is no longer visible to the user. Release most resources that are not needed when the activity is not visible.
+      * `onDestroy()`: Called before the activity is destroyed. Perform final cleanup (e.g., unregister broadcast receivers, release large resources).
+      * `onRestart()`: Called when the activity that was in the "Stopped" state is about to be re-displayed to the user. Always followed by `onStart()`.
+
+22. **What's the difference between onCreate() and onStart()?**
+    `onCreate()` is the very first callback received when an Activity instance is created. It is called *only once* during the entire lifetime of an activity. It's for essential setup.
+    `onStart()` is called when the Activity becomes visible to the user. It can be called *multiple times* during the activity's lifetime (e.g., when the user navigates back to it from another activity, or after the activity was in `onStop()` and is being resumed).
+
+23. **Why is setContentView() typically called in onCreate()?**
+    `setContentView()` is typically called in `onCreate()` because it's responsible for inflating the activity's user interface layout from an XML file and setting it as the content view for the activity. This UI setup is a one-time operation that needs to happen when the activity is first created, making `onCreate()` the most appropriate and efficient place for it. Calling it elsewhere might lead to redundant view inflation or issues with view availability.
+
+24. **When might onDestroy() be called without onPause() and onStop()?**
+    In normal Android operation, `onDestroy()` is always preceded by `onPause()` and `onStop()`. It's highly unusual for `onDestroy()` to be called directly.
+    However, this *could* potentially happen in rare, abnormal termination scenarios such as:
+
+      * An unhandled crash (runtime exception) in the activity that immediately kills the process.
+      * The system forcibly kills the app's process due to extreme low memory conditions, especially if the activity was already in the background and its process was a prime candidate for termination.
+        These are not part of the graceful lifecycle flow.
+
+25. **What is the purpose of onSaveInstanceState() and onRestoreInstanceState()?**
+
+      * **`onSaveInstanceState(Bundle outState)`:** This callback is invoked by the system before an activity might be killed to free up resources (e.g., during configuration changes like screen rotation, or when the system needs memory and destroys a background activity). Its purpose is to allow you to save transient, dynamic UI state (like text in an `EditText`, scroll position of a `RecyclerView`, or a selected tab) into the provided `Bundle`. This `Bundle` is then automatically saved by the system.
+      * **`onRestoreInstanceState(Bundle savedInstanceState)`:** This callback is invoked *after* `onStart()` (and after `onCreate()`, if the activity was recreated) if the activity is being recreated after being previously destroyed by the system. Its purpose is to retrieve the saved state from the `Bundle` provided by the system, allowing you to restore the UI to its previous state. It's often replaced by checking the `savedInstanceState` `Bundle` in `onCreate()`.
+
+26. **How does an Activity handle screen rotation and configuration changes?**
+    By default, when a significant configuration change occurs (like screen rotation, keyboard availability, or language change), Android destroys the current Activity instance and then recreates it.
+
+      * The system calls `onSaveInstanceState()` on the old instance to save its dynamic state.
+      * The old instance goes through `onPause()`, `onStop()`, and `onDestroy()`.
+      * A new instance of the Activity is created.
+      * The new instance goes through `onCreate()` (receiving the saved `Bundle`), `onStart()`, and `onResume()`.
+        This default behavior ensures that your app can load appropriate resources (e.g., landscape layouts) for the new configuration.
+
+27. **How can you preserve Activity state during configuration changes?**
+    Several methods can be used to preserve state during configuration changes:
+
+    1.  **`onSaveInstanceState()` and `onRestoreInstanceState()`:** For saving small, UI-related primitive data or `Parcelable`/`Serializable` objects.
+    2.  **`ViewModel` (Recommended):** The most common and robust way. `ViewModel` instances automatically survive configuration changes and process death, allowing you to store and manage UI-related data that is independent of the Activity's lifecycle.
+    3.  **`android:configChanges` in Manifest:** By declaring specific configuration changes (e.g., `android:configChanges="orientation|screenSize"`) in your `AndroidManifest.xml`, you prevent the Activity from being recreated. Instead, the Activity receives a call to `onConfigurationChanged(Configuration newConfig)`, and you handle the changes manually. Use this cautiously as it bypasses default system behavior and can make handling resource changes more complex.
+    4.  **Retained Fragments:** A Fragment can be marked as `setRetainInstance(true)` to survive configuration changes, often used to retain background tasks or `ViewModel`s (though `ViewModel` itself handles this directly now).
+
+28. **Is it possible to create an Activity without a user interface?**
+    Yes, it is possible to create an Activity without a user interface. You would simply **not call `setContentView()`** in its `onCreate()` method. Such an Activity can be used for:
+
+      * Performing background operations that require an Activity context (though a `Service` is usually more appropriate for long-running background tasks).
+      * Acting as a transparent intermediary or "stub" for specific system interactions.
+      * Hosting a `Fragment` that itself provides the UI, while the Activity remains technically "UI-less."
+        You can also make an Activity appear transparent by applying a theme like `Theme.AppCompat.Translucent.NoTitleBar` in the manifest.
+
+29. **What happens when the system kills your app process?**
+    When the Android system kills your app's process (e.g., due to low memory, user explicitly force-stopping the app, or a severe crash), the entire process, along with all its running components (Activities, Services, Broadcast Receivers), is terminated abruptly.
+
+      * No further lifecycle callbacks (`onDestroy()`) are guaranteed to be called if the termination is sudden.
+      * All data held in memory by the app's process is lost.
+      * If the user later navigates back to your app, the system will start a new process and attempt to recreate the last visible Activity, relying on `onSaveInstanceState()` to restore its state if it was correctly implemented.
+
+30. **How do you handle Activity recreation scenarios?**
+    Handling Activity recreation is crucial for maintaining a good user experience. The primary strategies are:
+
+      * **Use `ViewModel` (Primary Solution):** For UI-related data that should persist across configuration changes and process death. `ViewModel`s outlive their associated Activity instances.
+      * **Implement `onSaveInstanceState()` and `onRestoreInstanceState()`:** For saving small amounts of transient UI state (e.g., scroll position, selected item) within the `Bundle`. This bundle is provided to `onCreate()` and `onRestoreInstanceState()` on recreation.
+      * **Utilize `SavedStateHandle` (with `ViewModel`):** A `Map<String, Any?>` that allows `ViewModel`s to directly access and save state into the `Bundle` that `onSaveInstanceState()` would provide, simplifying state management.
+      * **Persist Non-UI Data:** For application data that needs to survive process death (e.g., user profiles, app settings), store it in persistent storage like Room database, SharedPreferences, or files.
+
+31. **What is the difference between finish() and finishAffinity()?**
+
+      * **`finish()`:** This method is called on an Activity to close only the *current* Activity instance. It removes this specific Activity from the top of the back stack. The user will then return to the previous Activity in the stack.
+      * **`finishAffinity()`:** This method finishes the *current* Activity and all Activities that are part of the *same task and have the same task affinity*. It's typically used when you want to exit a specific "flow" of activities within your application and clear the entire task associated with it, effectively taking the user back to the home screen or the previous app.
+
+32. **Explain task affinity and its impact on Activity behavior.**
+    Task affinity is an attribute that indicates which "task" an Activity prefers to belong to. By default, all Activities in an application have the same task affinity, which is the application's package name.
+    Its impact on Activity behavior includes:
+
+      * **Task Assignment:** It influences where an Activity is launched when using flags like `FLAG_ACTIVITY_NEW_TASK`. An Activity with `FLAG_ACTIVITY_NEW_TASK` will attempt to launch into an existing task with the same affinity, or create a new one if none exists.
+      * **`finishAffinity()` Behavior:** As explained above, `finishAffinity()` relies on task affinity to determine which activities to finish.
+      * **`allowTaskReparenting`:** This manifest attribute works with task affinity. If an Activity has `allowTaskReparenting="true"`, it can move from the task it was started in to a task it has an affinity for when that task is brought to the foreground.
+
+## Launch Modes
+
+33. **Explain different launch modes (standard, singleTop, singleTask, singleInstance).**
+    Launch modes determine how a new instance of an Activity is created and how it relates to the task (back stack) it's placed in. They are set in `AndroidManifest.xml` using `android:launchMode`.
+
+      * **`standard` (default):** A new instance of the Activity is created every time it's launched, and it's placed on top of the task stack that launched it.
+      * **`singleTop`:** If an instance of the Activity already exists at the *top* of the calling task's stack, a new instance is *not* created. Instead, the existing instance receives the new Intent through its `onNewIntent()` callback. If it's not at the top, a new instance is created.
+      * **`singleTask`:** The system checks if an instance of the Activity already exists in *any* task. If it does, that instance is brought to the foreground, and all other Activities on top of it in that task are cleared. If no instance exists, a new task is created for it, and the Activity becomes the root of that new task.
+      * **`singleInstance`:** Similar to `singleTask`, but the Activity becomes the *sole* Activity in its new task. No other Activities can be launched into the same task as this `singleInstance` Activity. Any Activities launched from it will go into a separate, new task.
+
+34. **What's the difference between FLAG\_ACTIVITY\_CLEAR\_TASK and FLAG\_ACTIVITY\_CLEAR\_TOP?**
+    These are `Intent` flags that modify launch behavior, often used with `startActivity()`:
+
+      * **`FLAG_ACTIVITY_CLEAR_TASK`:** Used in conjunction with `FLAG_ACTIVITY_NEW_TASK`. When these flags are set, the system clears *all* existing activities from the task that the new activity is being launched into, and then starts the new activity as the root of that now empty task. This effectively creates a completely fresh task stack for the new activity.
+      * **`FLAG_ACTIVITY_CLEAR_TOP`:** If the activity being launched already exists somewhere in the current task's back stack, all activities on top of that existing instance are cleared from the stack. The existing instance is brought to the top and receives the new Intent via `onNewIntent()`. If the activity does not exist in the stack, a new instance is created normally.
+
+35. **How do launch modes affect the back stack?**
+
+      * **`standard`:** Always adds a new instance to the top of the current task's back stack.
+      * **`singleTop`:** If the target Activity is already at the top, no new instance is added; `onNewIntent()` is called. Otherwise, a new instance is added to the top.
+      * **`singleTask`:** If an instance exists, it brings its task to the foreground and clears (pops) all Activities above it in that task's stack. If no instance exists, it creates a new task and becomes its root.
+      * **`singleInstance`:** Creates a *new, dedicated task* for itself, and it is the *only* Activity allowed in that task. Any subsequent Activities launched from it will automatically be placed in a *different* task.
+
+36. **When would you use singleInstance launch mode?**
+    You would use `singleInstance` launch mode when you need an Activity to be a globally unique instance and the sole Activity in its own dedicated task. This is typically used for:
+
+      * **Application entry points that act as central hubs:** For example, a dashboard Activity from which the user can branch off into various distinct parts of the application, and you always want this specific dashboard to be unique and clear of other Activities.
+      * **Activities that are integrated as part of the system or interact extensively with external apps:** Where maintaining a single instance and isolated task behavior is critical to prevent unexpected back stack interactions.
+        However, it's generally used sparingly due to its strict task isolation, which can lead to complex navigation scenarios.
+
+37. **What are Intent flags and how do they modify Activity behavior?**
+    Intent flags are integer constants that can be added to an `Intent` object using `addFlags()`. They provide instructions to the Android system on how to launch an Activity, how to interact with the task stack, or how to treat the Intent itself. They effectively modify the default behavior of `startActivity()`.
+    Examples:
+
+      * `FLAG_ACTIVITY_NEW_TASK`: Launches the Activity in a new task (or moves it to an existing one).
+      * `FLAG_ACTIVITY_SINGLE_TOP`: Behaves like `singleTop` launch mode for the current `startActivity()` call.
+      * `FLAG_ACTIVITY_NO_HISTORY`: The launched Activity will not be kept in the activity stack.
+      * `FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS`: Excludes the task from the recent apps list.
+
+38. **How do you clear the back stack when launching a new Activity?**
+    You can clear the back stack when launching a new Activity primarily using Intent flags:
+
+      * **To clear the entire current task and start a fresh one:**
+        `intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)`
+        This will ensure that when the user presses back from the new activity, they will go to the home screen or the previous app, not to any activities from the app's previous task.
+      * **To clear activities on top of an existing instance of the target Activity:**
+        `intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)`
+        This is often combined with `FLAG_ACTIVITY_SINGLE_TOP`. If the target Activity is already in the stack, all activities above it are removed.
+
+## Fragments
+
+39. **What is a Fragment and how does it differ from an Activity?**
+    A Fragment represents a modular portion of a user interface or behavior that can be placed inside an Activity. It has its own lifecycle, input events, and can be added or removed while the host Activity is running.
+    Key differences from an Activity:
+
+      * **Modularity/Reusability:** Fragments are designed to be modular and reusable across multiple Activities or within the same Activity for different layouts (e.g., tablet vs. phone).
+      * **Host Dependency:** A Fragment *must* always be hosted by an Activity (or another Fragment). It cannot exist independently.
+      * **Lifecycle:** While a Fragment has its own lifecycle, it's closely tied to and influenced by its host Activity's lifecycle.
+      * **UI Portion:** Fragments typically represent a *part* of the UI, whereas an Activity typically represents a single, entire screen.
+
+40. **Explain the Fragment lifecycle and its key callback methods.**
+    The Fragment lifecycle is distinct but intertwined with its host Activity's lifecycle. Key callback methods include:
+
+      * `onAttach(Context context)`: Called when the fragment has been associated with its host activity.
+      * `onCreate(Bundle savedInstanceState)`: Called when the fragment is being created. Perform non-UI initializations (similar to Activity's `onCreate`).
+      * `onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)`: Called to create and return the Fragment's UI view hierarchy. This is where you inflate your layout.
+      * `onViewCreated(View view, Bundle savedInstanceState)`: Called immediately after `onCreateView()` has returned, and the view hierarchy is fully created. Perform view-related setup here (e.g., `findViewById`, attaching listeners).
+      * `onActivityCreated(Bundle savedInstanceState)` (Deprecated): Called when the host Activity's `onCreate()` method has completed. Use `onViewCreated()` or `onStart()` for logic that depends on the host's Activity views.
+      * `onStart()`: Fragment becomes visible.
+      * `onResume()`: Fragment is in the foreground and active.
+      * `onPause()`: Fragment is no longer interactive.
+      * `onStop()`: Fragment is no longer visible.
+      * `onDestroyView()`: Called when the view hierarchy associated with the fragment is being removed. Clean up view-specific resources.
+      * `onDestroy()`: Fragment is being destroyed. Perform final cleanup.
+      * `onDetach()`: Called when the fragment is being disassociated from its host activity.
+
+41. **Which method is called only once in a Fragment lifecycle?**
+    `onAttach()` and `onCreate()` are typically called only once for a given Fragment instance during its lifecycle, unless the Fragment is explicitly destroyed and recreated by the system or `FragmentManager`.
+
+42. **What is the difference between onCreateView() and onViewCreated()?**
+
+      * **`onCreateView()`:** This method is responsible for **inflating the Fragment's user interface layout** from an XML resource and returning the root `View` of that hierarchy. At this point, the views are inflated but not yet fully configured or available for direct manipulation.
+      * **`onViewCreated()`:** This method is called immediately *after* `onCreateView()` returns. At this stage, the Fragment's views are fully created, initialized, and available. This is the ideal place to perform view-related setup, such as finding views by ID (`findViewById`), setting up adapters for `RecyclerView`s, or attaching event listeners.
+
+43. **How do you communicate between Fragment and Activity?**
+    Several recommended ways:
+
+      * **Interface (Callback Pattern):** Define an interface in the Fragment. The host Activity implements this interface. The Fragment then calls the interface method to send data or events back to the Activity. This is a robust, decoupled approach.
+      * **`ViewModel` (Shared):** Use a `ViewModel` scoped to the host Activity. Both the Fragment and the Activity can observe `LiveData` or `StateFlow` from this shared `ViewModel` to exchange data.
+      * **`Fragment Result API`:** For passing one-time results back from a child Fragment or a called Fragment to its parent/calling Fragment or Activity.
+
+44. **How do you communicate between two Fragments?**
+
+      * **Shared `ViewModel` (Recommended):** The most common and robust way. Both Fragments can share a `ViewModel` that is scoped to their common host Activity or to a navigation graph. One Fragment updates data (e.g., `LiveData`, `StateFlow`) in the `ViewModel`, and the other observes it.
+      * **Through Host Activity:** Fragment A communicates with its host Activity (e.g., via an interface or shared `ViewModel`), and the Activity then relays the information to Fragment B (e.g., by calling a method on Fragment B, or updating a shared `ViewModel`).
+      * **`Fragment Result API`:** For one-off result passing, where one Fragment initiates an action and another returns a result.
+
+45. **What are retained Fragments and when are they useful?**
+    A retained Fragment is a Fragment instance that is specifically marked to *not be destroyed* when its host Activity is recreated due to a configuration change (like screen rotation). You mark it by calling `setRetainInstance(true)` in its `onCreate()`.
+    They were historically useful for retaining objects like `AsyncTask`s, background threads, or large data objects that are expensive to re-initialize during configuration changes. However, with the advent of `ViewModel`, which handles this persistence automatically and more cleanly, the use of directly retained Fragments for UI state is largely discouraged. They are still useful for "headless" background tasks.
+
+46. **How do you handle back navigation within Fragments?**
+
+      * **`FragmentManager` Back Stack:** When performing `FragmentTransaction`s, call `addToBackStack(String name)` before `commit()`. This pushes the transaction onto the `FragmentManager`'s back stack. When the user presses the back button, the top transaction is popped, reversing its operations.
+      * **`OnBackPressedCallback` (Recommended for custom logic):** For more fine-grained control or conditional back navigation within a Fragment, use `OnBackPressedCallback` from `androidx.activity:activity-ktx`. You can register a callback in the Fragment's `onCreateView()` or `onViewCreated()` that intercepts back presses and performs custom actions. You can then optionally call `isEnabled = false` on the callback to allow default behavior if your custom logic doesn't fully handle the back press.
+
+47. **Why use only default constructor for Fragments?**
+    You should only use the default (no-argument) constructor for Fragments because the Android framework system needs to be able to recreate your Fragment instance in various scenarios (e.g., after a configuration change like screen rotation, or after the app's process has been killed by the system). If you define a custom constructor with arguments, the system won't know how to provide those arguments during recreation, leading to instantiation errors and crashes. Arguments should always be passed to Fragments via a `Bundle` using `setArguments()`.
+
+48. **How do you pass arguments to a Fragment safely?**
+    The safest and recommended way to pass arguments to a Fragment is by using a `Bundle` and the `setArguments()` method:
+
+    1.  Create a `Bundle` object.
+    2.  Use `bundle.putInt()`, `bundle.putString()`, `bundle.putParcelable()`, etc., to add your arguments to the `Bundle`.
+    3.  Call `fragmentInstance.setArguments(bundle)` before adding/replacing the Fragment.
+    4.  In the Fragment's `onCreate()` (or `onViewCreated()`), retrieve the arguments using `requireArguments().getInt("key")` or `getArguments()?.getString("key")`.
+        **Safe Args Gradle Plugin:** For compile-time type safety and simplified argument passing, the Navigation component's Safe Args plugin is highly recommended.
+
+49. **What's the difference between Fragment add() and replace() operations?**
+    Both `add()` and `replace()` are methods of `FragmentTransaction` for managing Fragments within a container:
+
+      * **`add(containerId, fragment)`:** Adds the specified Fragment to the container. Any existing Fragments in that container are *retained* but might be obscured by the new Fragment. Their `onDestroyView()` is *not* called. This is useful for overlapping UIs, like a transparent dialog Fragment.
+      * **`replace(containerId, fragment)`:** Removes any existing Fragments from the specified container and adds the new Fragment in their place. The `onDestroyView()` and `onDestroy()` (if not added to back stack) callbacks are called on the replaced Fragments' views. This is the more common operation for swapping out entire UI sections.
+
+50. **What is FragmentManager and FragmentTransaction?**
+
+      * **`FragmentManager`:** This is the class responsible for managing Fragments within an Activity. It provides methods to add, remove, replace, and perform other operations on Fragments. It also manages the Fragment back stack and interaction with nested Fragments. You get an instance by calling `getSupportFragmentManager()` (for AndroidX) from an Activity or Fragment.
+      * **`FragmentTransaction`:** A class that allows you to perform a set of Fragment operations (like `add()`, `remove()`, `replace()`, `hide()`, `show()`, `attach()`, `detach()`) as a single, atomic unit. You begin a transaction (`beginTransaction()`), perform one or more operations, and then `commit()` the transaction for the changes to take effect. It also supports `addToBackStack()` for back navigation.
+
+51. **How do you handle Fragment back stack?**
+    You handle the Fragment back stack using `FragmentManager` and `FragmentTransaction`.
+
+      * When performing a `FragmentTransaction` (e.g., `replace()` or `add()`) that you want to be reversible by the back button, call `fragmentTransaction.addToBackStack(String name)` before `commit()`. The `name` is optional but can be used to pop specific states.
+      * When the user presses the back button, the `FragmentManager` automatically pops the top transaction from its back stack, reversing the operations (e.g., showing the previously replaced Fragment).
+      * You can programmatically pop the back stack using `fragmentManager.popBackStack()` or `popBackStackImmediate()`.
+
+52. **What are headless Fragments and their use cases?**
+    A headless Fragment is a Fragment that does not have a user interface associated with it. Its `onCreateView()` method returns `null`. They are typically created with `setRetainInstance(true)` (though less necessary with `ViewModel`s now).
+    **Use cases:**
+
+      * **Retaining Background Operations:** Managing long-running background tasks (e.g., network requests, database operations) that need to persist across Activity re-creations due to configuration changes.
+      * **Managing Non-UI State:** Holding onto an object (like a `ViewModel` for older architectures, or a specific manager class) that needs to survive Activity destruction and recreation.
+      * **Providing Callbacks:** Acting as a bridge between an asynchronous task and the Activity, delivering results back to the recreated Activity instance.
+
+## Intents & Navigation
+
+53. **What is an Intent and explain implicit vs explicit Intents with examples.**
+    An `Intent` is a messaging object that an Android component can use to request an action from another component. It's a way for components to communicate with each other.
+
+      * **Explicit Intent:** Clearly specifies the target component (Activity, Service, Broadcast Receiver) by its fully qualified class name. Used when you know exactly which component you want to start within your own app.
+          * **Example:** `val intent = Intent(this, DetailActivity::class.java); startActivity(intent)`
+      * **Implicit Intent:** Declares a general action to be performed, along with the data on which to perform it. The Android system then finds a component on the device that can handle that action and data. Used to launch components outside your app, or to allow your app to be launched by other apps.
+          * **Example:** `val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")); startActivity(intent)` (opens web browser)
+
+54. **What are Intent Filters and how do they work?**
+    Intent Filters are declarations in the `AndroidManifest.xml` file that specify the capabilities of an application component (Activity, Service, or Broadcast Receiver). They tell the Android system what types of `Intent`s that component can respond to.
+    They work by defining:
+
+      * **`<action>`:** The general action to be performed (e.g., `ACTION_VIEW`, `ACTION_SEND`).
+      * **`<data>`:** The type of data (MIME type) and/or URI scheme, host, path that the component can handle (e.g., `http://`, `content://`).
+      * **`<category>`:** Provides additional information about the component's category or context (e.g., `CATEGORY_LAUNCHER`, `CATEGORY_BROWSABLE`).
+        When an implicit `Intent` is broadcast, the system compares its action, data, and categories against the `Intent Filters` declared by various components to find a suitable match.
+
+55. **How do you pass data between Activities using Intents?**
+    You pass data between Activities using `Intent` "extras."
+
+    1.  **Sending Activity:** Create an `Intent`, then use `intent.putExtra(key, value)` methods to add data. `putExtra()` supports primitives (int, String, boolean), arrays, `Bundle`s, and `Parcelable` or `Serializable` objects.
+          * `val intent = Intent(this, TargetActivity::class.java)`
+          * `intent.putExtra("user_id", 123)`
+          * `intent.putExtra("user_name", "Alice")`
+          * `startActivity(intent)`
+    2.  **Receiving Activity:** In the `onCreate()` method of the target Activity, retrieve the `Intent` using `getIntent()`, then access the extras `Bundle` to get the data.
+          * `val userId = intent.getIntExtra("user_id", -1)`
+          * `val userName = intent.getStringExtra("user_name")`
+
+56. **What is a PendingIntent and its common use cases?**
+    A `PendingIntent` is a token that grants a foreign application (another app, the system, or a different process) permission to use your application's `Intent` on your behalf, with the permissions and identity of your application. It acts as a wrapper around an `Intent`.
+    Common use cases:
+
+      * **Notifications:** Tapping a notification to launch an Activity.
+      * **App Widgets:** Clicking a button on a home screen widget to perform an action.
+      * **`AlarmManager`:** Scheduling a future event or task to be executed by your app at a specific time, even if your app is not running.
+      * **SMS/MMS operations:** Sending or receiving messages.
+
+57. **What is a Sticky Intent?**
+    A "Sticky Intent" is a type of broadcast that, after being sent, remains cached by the system so that new `BroadcastReceiver`s registered for it will immediately receive its last broadcast value. For example, `ACTION_BATTERY_CHANGED` is a sticky broadcast.
+    **Note:** `Context.sendStickyBroadcast()` is deprecated since API 21 due to security and performance implications. `LocalBroadcastManager` (for within-app sticky behavior) or more robust data persistence solutions are preferred for new development.
+
+58. **How do you handle deep linking in Android?**
+    Deep linking allows a specific URL (e.g., from a website, email, or another app) to open directly into particular content or a specific screen within your Android application.
+    To handle deep linking:
+
+    1.  **Define Intent Filters in `AndroidManifest.xml`:** For the Activity that should handle the deep link, add an `<intent-filter>` with:
+          * `<action android:name="android.intent.action.VIEW" />`
+          * `<category android:name="android.intent.category.DEFAULT" />`
+          * `<category android:name="android.intent.category.BROWSABLE" />`
+          * `<data>` tags specifying the `android:scheme` (e.g., `http`, `https`, or a custom scheme like `myapp`), `android:host`, and `android:pathPrefix` (or `path` or `pathPattern`) that your app can handle.
+    2.  **Handle the Incoming Intent:** In the target Activity's `onCreate()` and `onNewIntent()` methods, retrieve the `Uri` from the incoming `Intent` using `intent.getData()`. Parse this `Uri` to extract relevant parameters and navigate the user to the correct content within your app.
+    3.  **App Links (for HTTP/HTTPS):** For standard web URLs, use `android:autoVerify="true"` in your `<data>` tag and host an `assetlinks.json` file on your domain to enable App Links for secure, verified deep linking.
+
+59. **What are Intent actions and categories?**
+    `Intent` actions and categories are key components of an `Intent` filter that help Android determine which component should receive an implicit `Intent`:
+
+      * **Actions (`<action>`):** A string that specifies the general action to be performed (e.g., `android.intent.action.VIEW` for displaying data, `android.intent.action.SEND` for sending data, `android.intent.action.MAIN` for the app's primary entry point).
+      * **Categories (`<category>`):** A string that provides additional information about the kind of component that should handle the Intent, or the context in which it should be handled (e.g., `android.intent.category.LAUNCHER` for the app's icon in the app drawer, `android.intent.category.BROWSABLE` for a web link that can be opened by a browser).
+
+60. **How do you create custom Intent actions?**
+    You create custom Intent actions by defining a unique string constant and declaring it in the `AndroidManifest.xml` of the component that will respond to it.
+
+    1.  **Define a unique string:** `const val ACTION_SHOW_DETAIL = "com.example.myapp.ACTION_SHOW_DETAIL"`
+    2.  **Declare in Manifest:** In the `<intent-filter>` of your target Activity (or Service/Receiver), add an `<action>` tag with your custom string:
+        ```xml
+        <activity android:name=".DetailActivity">
+            <intent-filter>
+                <action android:name="com.example.myapp.ACTION_SHOW_DETAIL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        ```
+    3.  **Use in Code:** When sending the Intent: `val intent = Intent("com.example.myapp.ACTION_SHOW_DETAIL")`
+
+61. **What is the difference between startActivity() and startActivityForResult()?**
+
+      * **`startActivity(Intent intent)`:** Launches a new Activity and simply moves to it without expecting any data or result back from that Activity. It's a "fire and forget" mechanism.
+      * **`startActivityForResult(Intent intent, int requestCode)` (Deprecated):** This method was used to launch a new Activity with the expectation that it would return a result back to the calling Activity. The result was delivered via the `onActivityResult(int requestCode, int resultCode, Intent data)` callback. The `requestCode` was used to identify which request the result belonged to. This method is now deprecated.
+
+62. **How do you handle Activity results with the new Activity Result API?**
+    The new Activity Result API, part of AndroidX Activity library, provides a safer and more structured way to handle Activity results, replacing the deprecated `startActivityForResult()`.
+
+    1.  **Register a callback:** In the calling Activity or Fragment, register an `ActivityResultLauncher` instance using `registerForActivityResult()`, specifying an `ActivityResultContract` (e.g., `ActivityResultContracts.StartActivityForResult()`) and a lambda callback to handle the result.
+        ```kotlin
+        val someActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                // Handle the data from the result Intent
+            }
+        }
+        ```
+    2.  **Launch the Activity:** To start the target Activity, call `someActivityResultLauncher.launch(intent)`.
+        This API is lifecycle-aware, reducing boilerplate and potential issues with lifecycle events.
+
+63. **What are scheme-based and app link deep links?**
+    These are two types of deep links:
+
+      * **Scheme-based Deep Links (Custom Scheme URLs):** Use custom URI schemes (e.g., `myapp://product/123`). When a user clicks such a link, the system looks for an app registered to handle that custom scheme. The downside is that multiple apps can declare the same custom scheme, leading to a disambiguation dialog (user choice) or potential security issues.
+      * **App Links (HTTP/HTTPS Deep Links):** These are standard HTTP/HTTPS URLs (e.g., `https://www.example.com/product/123`). They offer stronger security and a better user experience because they are verified. If your app is verified to own the domain (via a Digital Asset Links JSON file on your web server), clicking the link will directly open your app, bypassing the disambiguation dialog and opening a browser. If verification fails, it falls back to a regular web link.
+
+64. **How do you verify app links?**
+    App Links verification is a crucial step for making your HTTP/HTTPS deep links work seamlessly. It involves two main parts:
+
+    1.  **Digital Asset Links JSON file on your website:**
+          * You host a `assetlinks.json` file at `https://yourdomain.com/.well-known/assetlinks.json`.
+          * This file contains metadata about your Android app, specifically its `package_name` and the `sha256_cert_fingerprints` of your app's signing key.
+    2.  **`android:autoVerify="true"` in `AndroidManifest.xml`:**
+          * In the `<data>` tag of your deep link's `intent-filter`, you include `android:autoVerify="true"`.
+          * When your app is installed, the Android system automatically attempts to fetch the `assetlinks.json` file from your specified domains and verifies that the app's signing certificate matches what's declared in the JSON file. If the verification succeeds, your app becomes the default handler for those URLs.
+
+## Services & Background Processing
+
+65. **What is a Service and explain its lifecycle?**
+    A Service is an application component that can perform long-running operations in the background, without a user interface. It runs independently of an Activity's lifecycle and can continue to run even if the user navigates away from your app or the Activity is destroyed.
+    **Service Lifecycle:**
+
+      * `onCreate()`: Called once when the service is first created. Perform initial setup here.
+      * `onStartCommand(Intent intent, int flags, int startId)`: Called when a client starts the service by calling `startService()`. The service begins a background operation. The return value (e.g., `START_STICKY`, `START_NOT_STICKY`) indicates how the system should handle the service if it's killed.
+      * `onBind(Intent intent)`: Called when another component binds to the service by calling `bindService()`. It must return an `IBinder` object that provides the communication interface.
+      * `onUnbind(Intent intent)`: Called when all clients have disconnected from the service.
+      * `onDestroy()`: Called when the service is no longer used and is being shut down. Perform final cleanup and release resources.
+
+66. **What is the difference between started Service and bound Service?**
+
+      * **Started Service:** A service is "started" when an application component calls `startService()`. It typically performs a single, independent background operation (e.g., downloading a file, playing music) and runs indefinitely until it explicitly stops itself using `stopSelf()` or another component stops it with `stopService()`. It continues running even if the component that started it is destroyed.
+      * **Bound Service:** A service is "bound" when an application component calls `bindService()`. It provides a client-server interface, allowing components to interact with the service (e.g., controlling a music player). The service runs only as long as at least one client component is bound to it. When all clients unbind, the service is destroyed.
+
+67. **What is the difference between Service, IntentService, and JobIntentService?**
+
+      * **`Service`:** A general-purpose background component. It runs on the app's *main thread* by default, so long-running operations within a `Service` require you to manage your own background threads. Can be started or bound.
+      * **`IntentService` (Deprecated since API 30):** A subclass of `Service` designed to simplify background work. It handles Intents asynchronously on a dedicated *worker thread*. It processes one Intent at a time in a queue and automatically stops itself when all work is done. It was suitable for simple, fire-and-forget background tasks.
+      * **`JobIntentService` (Recommended replacement for `IntentService`):** A compatibility class that works similarly to `IntentService` but intelligently uses `JobScheduler` on Android 8.0 (API 26) and higher, and falls back to `Context.startService()` for older versions. This helps your app conform to background execution limits on newer Android versions and ensures work is handled efficiently and reliably.
+
+68. **What are the differences between Service and Thread?**
+
+      * **`Service`:** An Android application component. It's managed by the Android system and provides a way to perform long-running operations *independently of the UI lifecycle*, meaning it can continue running even if the app's Activity is not in the foreground. By default, a `Service` runs on the app's main thread, so for long tasks, it usually needs to create its own internal `Thread` or use a concurrency framework.
+      * **`Thread`:** A fundamental Java/Kotlin concurrency primitive. It represents a single path of execution within a program. Threads are *not* Android components; they are not managed by the system's component lifecycle. If the app's process is killed, any `Thread`s within it are also terminated. Services often use `Thread`s (or higher-level constructs like `Executors` or Coroutines) internally to perform their actual background work off the main thread.
+
+69. **How do you create and manage bound services?**
+
+    1.  **Create Service Class:** Extend `Service` and override `onBind(Intent intent)`. This method must return an `IBinder` object, which is the communication interface clients will use. Typically, you'll create a custom `Binder` subclass inside your service.
+        ```kotlin
+        class MyBoundService : Service() {
+            private val binder = MyBinder()
+            inner class MyBinder : Binder() {
+                fun getService(): MyBoundService = this@MyBoundService
+            }
+            override fun onBind(intent: Intent?): IBinder = binder
+            // Add methods clients can call via the binder
+            fun doSomething(): String = "Hello from bound service!"
+        }
+        ```
+    2.  **Register in Manifest:** Declare the service in `AndroidManifest.xml` (e.g., `<service android:name=".MyBoundService" android:exported="false"/>`).
+    3.  **Client Binds to Service:** In your Activity/Fragment, call `bindService()` with an `Intent` targeting your service and a `ServiceConnection` callback.
+        ```kotlin
+        private var myService: MyBoundService? = null
+        private val connection = object : ServiceConnection {
+            override fun onServiceConnected(className: ComponentName, service: IBinder) {
+                val binder = service as MyBoundService.MyBinder
+                myService = binder.getService()
+                // Now you can call methods on myService
+                Log.d("Service", myService?.doSomething() ?: "Service null")
+            }
+            override fun onServiceDisconnected(arg0: ComponentName) {
+                myService = null
+            }
+        }
+        // In Activity's onCreate or onStart:
+        Intent(this, MyBoundService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+        ```
+    4.  **Client Manages Unbinding:** Call `unbindService(connection)` when the client no longer needs the service, typically in `onStop()` or `onDestroy()` to prevent memory leaks.
+
+70. **What is AIDL (Android Interface Definition Language)?**
+    AIDL (Android Interface Definition Language) is a simple interface definition language (IDL) used to define a programming interface that allows client and service to agree upon the type of interprocess communication (IPC) that they will perform. You use AIDL when you need to perform IPC between different application processes, particularly when:
+
+      * You need to allow multiple applications to access your service simultaneously.
+      * You need to handle concurrent requests from different processes.
+        AIDL is used to generate an interface file (e.g., `IMyAidlInterface.java`) that both the service and client can use for communication, abstracting the complexities of underlying Binder IPC.
+
+71. **How do you communicate between Service and Activity?**
+
+      * **Bound Service:** The most direct way. The Activity binds to the Service, and the Service provides an `IBinder` that allows the Activity to call public methods directly on the Service instance.
+      * **`LocalBroadcastManager`:** For one-way communication from Service to Activity (or within the same app). The Service sends a local broadcast, and the Activity registers a `BroadcastReceiver` to listen for it. This is efficient and safe for within-app communication.
+      * **`Messenger` / `Handler`:** For asynchronous, message-based communication, especially suitable for IPC if your service needs to be accessible by multiple clients across different processes.
+      * **Shared Data (e.g., Database, SharedPreferences):** Both components can read/write to a common persistent data source.
+      * **`EventBus` (third-party library):** A publish-subscribe pattern library that simplifies communication by allowing components to post and subscribe to events.
+
+72. **What are foreground services and when to use them?**
+    A foreground service is a type of service that is performing an operation that is noticeable to the user. Unlike a regular background service, a foreground service *must* display an ongoing notification to the user, providing transparency about its operation.
+    **When to use them:**
+
+      * For tasks that *must not be interrupted* by the system's battery optimizations (like Doze mode or App Standby).
+      * When the service is performing an active task that the user is aware of and potentially interacting with (e.g., playing music, providing turn-by-turn navigation, recording exercise data, a call in progress).
+        Using a foreground service tells the system that your app is performing important work and should not be killed.
+
+73. **What is WorkManager and its primary use cases?**
+    WorkManager is an Android Jetpack library (part of Architecture Components) for managing deferrable, guaranteed background work. It's the recommended solution for persistent tasks that need to run reliably even if the app exits or the device restarts. It handles compatibility across different Android versions and gracefully manages battery optimizations.
+    **Primary Use Cases:**
+
+      * **Guaranteed execution:** Tasks that *must* run eventually, regardless of app or device state.
+      * **Network operations:** Syncing data with a backend, fetching new content, uploading logs.
+      * **Content processing:** Applying filters to images, compressing data.
+      * **Scheduled tasks:** Performing periodic data updates or cleanup.
+      * **Tasks with constraints:** Running only when network is available, device is charging, or idle.
+
+74. **What is JobScheduler and how does it work?**
+    JobScheduler is a system API introduced in Android 5.0 (Lollipop) that provides a flexible and battery-efficient way to schedule various types of jobs. It allows apps to define conditions (e.g., network available, device charging, device idle) under which a task should run.
+    **How it works:**
+
+      * Developers define `JobInfo` objects specifying constraints for their work.
+      * `JobScheduler` then batches these jobs from multiple applications and executes them efficiently when the specified conditions are met. This minimizes wake-ups and saves battery.
+      * WorkManager uses JobScheduler internally on Android 5.0+ to fulfill its guaranteed and constrained work requests.
+
+75. **How does WorkManager guarantee task execution?**
+    WorkManager guarantees task execution through several mechanisms:
+
+      * **Internal Database:** It stores all work requests in an internal SQLite database. This ensures that work persists across app restarts and even device reboots.
+      * **Intelligent Delegation:** It intelligently chooses the most appropriate underlying system API for the task based on the device's API level and the work's constraints. This includes `JobScheduler` (for API 23+), `AlarmManager` + `BroadcastReceiver` (for older APIs), or even `Context.startService()` if needed, adapting to different platform behaviors and restrictions.
+      * **Retries and Backoff:** It supports defining retry policies with exponential backoff for failed or interrupted tasks, ensuring they eventually complete.
+      * **Constraints:** By allowing tasks to define required constraints (network, charging, idle), WorkManager ensures work is only attempted when success is most likely and battery drain is minimized.
+
+76. **What is the minimum repeat interval for PeriodicWorkRequest?**
+    The minimum repeat interval for a `PeriodicWorkRequest` (a repeating background task scheduled with WorkManager) is **15 minutes**. Even if you specify a shorter interval when building the `PeriodicWorkRequest`, WorkManager will enforce this 15-minute minimum for battery optimization reasons.
+
+77. **How do you handle background tasks without draining battery?**
+    The key is to use the right API for the right job, and respect system battery optimizations:
+
+      * **Use WorkManager:** For *deferrable, guaranteed* background work. It leverages system APIs (JobScheduler, Doze) for efficient scheduling.
+      * **Define Constraints:** For WorkManager tasks, specify constraints like `setRequiredNetworkType()`, `setRequiresCharging()`, `setRequiresDeviceIdle()` so tasks only run when conditions are optimal (e.g., on Wi-Fi and charging).
+      * **Avoid unnecessary wakelocks:** If you use a wakelock, ensure it's held for the minimum duration required and released promptly.
+      * **Short, Atomic Tasks:** Break down long tasks into smaller, manageable chunks.
+      * **Foreground Services (only when necessary):** For user-facing, continuous tasks that cannot be interrupted, use foreground services with a persistent notification.
+      * **Batching:** Group similar background tasks to reduce frequent device wake-ups.
+
+78. **How would you detect user inactivity?**
+    Detecting user inactivity typically involves monitoring user input events and setting a timer:
+
+    1.  **Override `dispatchTouchEvent()` or `onUserInteraction()`:** In your base Activity, override `dispatchTouchEvent()` (to capture all touch events) or `onUserInteraction()` (a simpler callback for any user interaction).
+    2.  **Reset a Timer/Handler:** Inside these methods, reset a `Handler.postDelayed()` timer. If the timer's runnable executes, it indicates a period of inactivity.
+    3.  **Application.ActivityLifecycleCallbacks:** Observe lifecycle changes across all activities. If the app goes into the background for a prolonged period (no `onResume()` calls), it could indicate inactivity.
+    4.  **`PowerManager.isInteractive()`:** (API 20+) Can check if the device is currently in an interactive state (screen on, user actively using it), though this is more about device state than specific app interaction.
+
+79. **What is Doze mode and App Standby?**
+    These are major battery optimization features introduced in Android 6.0 (Marshmallow):
+
+      * **Doze mode:** This activates when a device is left stationary, unplugged, and with its screen off for an extended period. During Doze, the system periodically defers app background CPU, network activity, and syncs to brief "maintenance windows." This significantly reduces battery drain by extending the time between device wake-ups.
+      * **App Standby:** This targets apps that the user hasn't actively used for a while. If an app isn't in the foreground and hasn't been used recently, it can be placed into an App Standby state. In this state, the system limits the app's network access and background jobs. It's designed to conserve battery for less frequently used apps.
+
+80. **How does WorkManager differ from JobScheduler and AlarmManager?**
+
+      * **`WorkManager`:** (High-level API) The recommended solution for *deferrable, guaranteed background work*. It handles persistence across reboots, network conditions, retries, and compatibility across Android versions by intelligently choosing the best underlying system APIs (`JobScheduler`, `AlarmManager`, `startService()`). Developers define "work," and WorkManager ensures it runs.
+      * **`JobScheduler`:** (System API, API 21+) A lower-level API for *scheduling flexible, battery-efficient background jobs* based on specific conditions (network, charging, idle). It doesn't inherently offer persistence across reboots or fallbacks for older Android versions; WorkManager builds upon it.
+      * **`AlarmManager`:** (System API) Used for *scheduling precise or inexact alarms* at specific times or intervals, even when the device is asleep or the app is not running. It's time-based, not condition-based, and doesn't inherently guarantee execution across reboots or manage battery optimizations as robustly as WorkManager. It's often used for one-time, time-critical events or repeating specific actions.
+
+81. **What are Worker, ListenableWorker, and CoroutineWorker?**
+    These are the abstract classes you extend to define the actual work that WorkManager executes:
+
+      * **`Worker`:** The most basic abstract class for implementing *synchronous* background work. You override the `doWork()` method, which runs on a background thread managed by WorkManager, and return a `Result` (e.g., `Result.success()`, `Result.failure()`, `Result.retry()`).
+      * **`ListenableWorker`:** An abstract class for performing *asynchronous* background work. You override `startWork()`, which returns a `ListenableFuture<Result>`. This allows you to initiate an asynchronous operation (like a network request) and signal its completion later by resolving the future. `Worker` is a synchronous implementation of `ListenableWorker`.
+      * **`CoroutineWorker`:** A subclass of `ListenableWorker` that allows you to write your background work using Kotlin coroutines. You override `doWork()`, which is a `suspend` function. This provides a cleaner and more idiomatic way to handle asynchronous operations within WorkManager using Kotlin. It's the recommended choice when using Kotlin.
+
+82. **How do you chain work requests in WorkManager?**
+    WorkManager allows you to chain work requests to define a sequence or parallel execution of tasks:
+
+      * **Sequential Chain:** To execute tasks in order (Task A then Task B then Task C):
+        `WorkManager.getInstance(context).beginWith(workA).then(workB).then(workC).enqueue()`
+      * **Parallel then Sequential:** To execute a set of tasks in parallel, and then another task after all of them complete:
+        `WorkManager.getInstance(context).beginWith(listOf(workA, workB)).then(workC).enqueue()`
+        WorkManager ensures that a work request in a chain only starts execution after all its predecessors in the chain have successfully completed. You can also define input for subsequent work requests based on the output of preceding ones.
