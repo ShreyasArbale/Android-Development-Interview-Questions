@@ -665,3 +665,1001 @@
       * **Parallel then Sequential:** To execute a set of tasks in parallel, and then another task after all of them complete:
         `WorkManager.getInstance(context).beginWith(listOf(workA, workB)).then(workC).enqueue()`
         WorkManager ensures that a work request in a chain only starts execution after all its predecessors in the chain have successfully completed. You can also define input for subsequent work requests based on the output of preceding ones.
+
+## UI Components & Layouts
+
+83. **What is the difference between View and ViewGroup?**
+    \* **`View`:** The most basic building block of UI. It represents a single visual element on the screen that the user can see and interact with (e.g., `Button`, `TextView`, `ImageView`). It draws itself and handles events.
+    \* **`ViewGroup`:** A special type of `View` that can contain (or "group") other `View`s and `ViewGroup`s. It's responsible for arranging its child views on the screen (e.g., `LinearLayout`, `RelativeLayout`, `ConstraintLayout`). It acts as a container for organizing UI elements.
+
+84. **What is Toast in Android and how to display it?**
+    A `Toast` is a small, transient, pop-up message that appears briefly on the screen and then automatically fades away. It's used to provide simple feedback to the user without interrupting their current activity.
+    To display it:
+    ` kotlin     Toast.makeText(context, "This is a Toast message!", Toast.LENGTH_SHORT).show()      `
+    `context` is typically your `Activity` or `Application` context. `LENGTH_SHORT` or `LENGTH_LONG` determine duration.
+
+85. **What is an Adapter and its purpose with RecyclerView?**
+    An `Adapter` is a bridge between a data source (e.g., a list of items) and a UI component (like `RecyclerView` or `ListView`) that needs to display that data.
+    With `RecyclerView`, the `Adapter`'s purpose is to:
+    \* **Provide Data:** Retrieve data items from the data source.
+    \* **Create ViewHolders:** Create and bind `ViewHolder`s (which hold references to item views) to display individual data items.
+    \* **Bind Data to Views:** Populate the views within a `ViewHolder` with data for a specific position in the list.
+    It efficiently manages the creation and recycling of item views as the user scrolls, improving performance.
+
+86. **What are the differences between LinearLayout, RelativeLayout, and ConstraintLayout?**
+    \* **`LinearLayout`:** Arranges views in a single row or column. Simple to use but can lead to deep, inefficient view hierarchies for complex UIs (nested weights).
+    \* **`RelativeLayout`:** Arranges views based on their positions relative to each other (e.g., "to the right of," "below," "aligned with parent's top"). Can create flat hierarchies but often becomes complex and hard to maintain for intricate layouts.
+    \* **`ConstraintLayout`:** A flexible and powerful layout that allows you to position and size views using "constraints" to other views, the parent, or guidelines. It's designed to create complex, flat, and highly optimized layouts, significantly reducing nested view hierarchies and improving performance. It's the recommended layout for most modern Android UIs.
+
+87. **When might you use a FrameLayout?**
+    You might use a `FrameLayout` when you need to display a single item or stack multiple items on top of each other, typically to display only one at a time.
+    Common use cases:
+    \* **Fragment Containers:** Often used as the container in an Activity where Fragments are added and replaced.
+    \* **Overlays:** When you need to place a progress spinner, a badge, or a temporary message directly over another view.
+    \* **Simple Views:** For very basic layouts that contain only one child view.
+
+88. **Why is XML commonly used for Android UI layouts?**
+    XML is commonly used for Android UI layouts because:
+    \* **Separation of Concerns:** It cleanly separates the UI structure and design from the application's logic (Java/Kotlin code), making the code more organized and maintainable.
+    \* **Readability and Declarative Nature:** XML is declarative, making layouts easy to read, understand, and visualize.
+    \* **Static Layouts:** It's well-suited for defining static UI layouts.
+    \* **Design Tools Integration:** Android Studio's Layout Editor provides excellent visual tools that work directly with XML layout files, enabling drag-and-drop design.
+    \* **Resource Management:** XML layouts can easily leverage Android's resource system for different screen sizes, orientations, and languages.
+
+89. **What are dp, sp, and px units? When to use each?**
+    These are units of measurement for defining dimensions in Android layouts:
+    \* **`px` (pixels):** Actual pixels on the screen. Device-dependent and not recommended for layouts as they don't scale across different screen densities. Use sparingly, usually for drawing specific pixel-perfect graphics.
+    \* **`dp` (density-independent pixels):** A virtual pixel unit that scales with screen density. `1dp` is approximately `1/160th` of an inch. Use for defining UI element sizes (width, height, padding, margin) to ensure consistent physical size across devices with different pixel densities.
+    \* **`sp` (scale-independent pixels):** Similar to `dp`, but also scales based on the user's font size preference. Use *only* for defining text sizes to ensure accessibility for users with impaired vision.
+
+90. **What is a Spannable and SpannableString?**
+
+      * **`Spannable`:** An interface that extends `CharSequence` and allows for applying markup objects (spans) to text at specific ranges. These spans can modify text appearance (e.g., bold, color, size), behavior (e.g., clickability), or even drawables, and can be changed even after creation.
+      * **`SpannableString`:** A mutable implementation of the `Spannable` interface. It means you can apply, remove, and update spans on the text after it has been created.
+        They are used when you need to display text with rich formatting where different parts of the text have different styles or behaviors (e.g., hyperlinked text, bold words in a sentence, text with custom fonts or background colors).
+
+91. **What is View Binding vs Data Binding?**
+    Both are tools to simplify interaction with views in Android:
+    \* **`View Binding`:** A feature that generates a binding class for each XML layout file. This binding class contains direct references to all views in that layout that have an `id`. It replaces `findViewById()` calls, providing compile-time safety and type safety, preventing `NullPointerException`s due to missing views. It's generally faster and simpler to set up than Data Binding.
+    \* **`Data Binding`:** A more powerful library that allows you to bind UI components in your layouts directly to data sources (e.g., `ViewModel`s, `LiveData`) using a declarative format in XML. This reduces boilerplate code for updating views, enables two-way data binding, and moves UI logic out of Activities/Fragments into the layout XML. It builds on top of View Binding.
+
+92. **What is a Dialog and different types available?**
+    A `Dialog` is a small pop-up window that appears in front of the current Activity, pausing the user's activity and requiring a response or acknowledgment before proceeding.
+    Different types available:
+    \* **`AlertDialog`:** The most common type, used for displaying simple messages with customizable buttons (positive, negative, neutral), title, and optionally an icon or list items.
+    \* **`DatePickerDialog`:** For allowing users to select a date.
+    \* **`TimePickerDialog`:** For allowing users to select a time.
+    \* **`ProgressDialog` (Deprecated):** Used to show indeterminate progress (spinning circle) or determinate progress (progress bar). Replaced by custom `AlertDialog`s with `ProgressBar`s or other UI elements for better UX.
+    \* **Custom Dialogs:** You can create your own dialogs by extending `DialogFragment` and inflating a custom layout, offering complete flexibility over the dialog's appearance and behavior.
+
+93. **How do you create custom Views in Android?**
+    You create custom `View`s in Android to encapsulate specific drawing and interaction logic, often to create unique UI components not provided by the standard framework.
+    Steps typically involve:
+    1\.  **Extend a `View` or `ViewGroup` subclass:** Choose the most appropriate base class (e.g., `View` for a custom drawing surface, `LinearLayout` for a composite view).
+    2\.  **Override Constructors:** Implement the necessary constructors (typically `(Context context)`, `(Context context, AttributeSet attrs)`, `(Context context, AttributeSet attrs, int defStyleAttr)`).
+    3\.  **Parse Custom Attributes (optional):** If you define custom attributes in `attrs.xml`, parse them in the constructor using `context.obtainStyledAttributes()`.
+    4\.  **Override `onMeasure(int widthMeasureSpec, int heightMeasureSpec)`:** To determine the view's size.
+    5\.  **Override `onDraw(Canvas canvas)`:** For custom drawing logic (if extending `View`). Use `Canvas` and `Paint` objects to draw shapes, text, images.
+    6\.  **Handle Input Events:** Override `onTouchEvent(MotionEvent event)` for touch interactions or implement `OnClickListener`, etc.
+    7\.  **Inflate Layout (if composite view):** If extending `ViewGroup` or a layout, you might inflate an XML layout into your custom view.
+
+94. **What is RecyclerView and how does it improve upon ListView?**
+    `RecyclerView` is a more advanced and flexible UI component for displaying large sets of data in a scrollable list or grid. It's designed to be highly efficient, especially for dynamic lists that change frequently.
+    It improves upon `ListView` in several key ways:
+    \* **Mandatory ViewHolder Pattern:** `RecyclerView` enforces the `ViewHolder` pattern, which optimizes performance by recycling views and avoiding expensive `findViewById()` calls during scrolling. `ListView` only recommended it.
+    \* **LayoutManager:** `RecyclerView` decouples the responsibility of item positioning from the view itself, thanks to `LayoutManager`s (e.g., `LinearLayoutManager`, `GridLayoutManager`). This allows for easy switching between list, grid, and staggered layouts without changing the Adapter.
+    \* **Item Animations:** `RecyclerView` provides built-in support for item animations (add, remove, move, change) through `ItemAnimator`, making list updates visually smoother. `ListView` had limited animation capabilities.
+    \* **Modularity/Extensibility:** Its architecture is more modular, making it easier to customize various aspects (decoration, touch handling, item animations).
+
+95. **How do you optimize RecyclerView performance?**
+    Optimizing `RecyclerView` performance is crucial for smooth scrolling:
+    \* **Use `ViewHolder` Pattern:** (Mandatory by design) Ensures views are recycled.
+    \* **`DiffUtil`:** Use `DiffUtil` for list updates instead of `notifyDataSetChanged()` to calculate minimal updates, leading to smoother animations and better performance.
+    \* **`setHasFixedSize(true)`:** If your `RecyclerView`'s height/width won't change based on content, call this to tell `RecyclerView` it doesn't need to recalculate item sizes on every scroll.
+    \* **Avoid Expensive Operations in `onBindViewHolder()`:** Keep `onBindViewHolder()` lightweight. Avoid complex calculations, large allocations, or disk/network I/O. Defer these to background threads.
+    \* **Optimize Item Layouts:** Keep item layouts flat and simple. Avoid deep nesting or complex `ViewGroup`s within item views. Use `ConstraintLayout`.
+    \* **Pre-fetching:** For complex item layouts or images, consider using `RecyclerView.setItemViewCacheSize()` or `RecyclerView.setRecyclerListener()` to pre-load or pre-fetch items.
+    \* **Lazy Loading Images:** Use image loading libraries (e.g., Glide, Coil) that support lazy loading and caching.
+    \* **Stable IDs (`setHasStableIds(true)`):** If your data items have unique, unchanging IDs, set this to `true` and implement `getItemId()` in your adapter. This helps `RecyclerView` better track items during updates and animations.
+
+96. **What are ViewHolders and their importance?**
+    A `ViewHolder` is a simple container class that holds references to the `View`s for a single item in a `RecyclerView` list. Instead of calling `findViewById()` repeatedly for each new item, `RecyclerView` recycles `ViewHolder` objects.
+    Their importance lies in:
+    \* **Performance Optimization:** By holding cached references to item `View`s, `ViewHolder`s eliminate the need for expensive `findViewById()` calls during scrolling, greatly improving performance and smoothness.
+    \* **Efficient Recycling:** When an item scrolls off-screen, its `ViewHolder` is detached and placed in a pool. When a new item scrolls into view, an existing `ViewHolder` from the pool is reused and simply re-bound with new data, rather than creating a whole new `View` hierarchy.
+    \* **Structured Access:** Provides a clean way to access the child views of an item layout within the Adapter's `onBindViewHolder()` method.
+
+97. **How do you handle item click events in RecyclerView?**
+    Unlike `ListView`, `RecyclerView` does not have a built-in `setOnItemClickListener()`. You handle item click events by manually attaching click listeners to the views *within* the `ViewHolder` or the entire item view in the Adapter.
+    Common approaches:
+    1\.  **In `onBindViewHolder()`:** Set `OnClickListener` on the item's root view or individual child views. Pass the click event back to the Activity/Fragment via an interface or a lambda.
+
+    ```kotlin
+    class MyAdapter(...) {
+        var onItemClick: ((MyItem) -> Unit)? = null
+
+        override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+            val item = dataList[position]
+            holder.itemView.setOnClickListener {
+                onItemClick?.invoke(item)
+            }
+            // Or set on a specific view: holder.myButton.setOnClickListener { ... }
+        }
+    }
+    // In Activity/Fragment:
+    adapter.onItemClick = { item -> /* handle click for item */ }
+    ```
+
+<!-- end list -->
+
+```
+2.  **Using `View.OnClickListener` in `ViewHolder`:** Implement `OnClickListener` directly within the `ViewHolder` class. This is often cleaner.
+3.  **Using the new `ListAdapter` and `DiffUtil`:** This combines well with `DiffUtil` for more robust state management and event handling.
+```
+
+98. **What is DiffUtil and how does it optimize RecyclerView updates?**
+    `DiffUtil` is a utility class from the AndroidX support library that calculates the difference between two lists and outputs a list of update operations (additions, removals, moves, changes) that transform the old list into the new list.
+    **How it optimizes updates:**
+    \* **Granular Updates:** Instead of calling `notifyDataSetChanged()` (which redraws the entire list), `DiffUtil` allows you to call specific `RecyclerView.Adapter` methods like `notifyItemInserted()`, `notifyItemRemoved()`, `notifyItemChanged()`, etc.
+    \* **Performance:** It performs the diff calculation on a background thread (or efficiently on the main thread for small lists) and then dispatches the updates to the adapter on the main thread.
+    \* **Animations:** Granular updates enable `RecyclerView`'s default item animations to work correctly, providing a smoother user experience.
+    \* **Efficiency:** It avoids unnecessary re-binding and re-drawing of items that haven't changed.
+
+99. **What are the different RecyclerView LayoutManagers?**
+    `LayoutManager` is an abstract class in `RecyclerView` that controls how items are positioned and laid out within the `RecyclerView`, as well as handling scrolling behavior.
+    Common built-in `LayoutManager`s:
+
+      * **`LinearLayoutManager`:** Lays out items in a single line, either vertically (most common for lists) or horizontally.
+      * **`GridLayoutManager`:** Lays out items in a grid. You specify the number of columns (for vertical scrolling) or rows (for horizontal scrolling).
+      * **`StaggeredGridLayoutManager`:** Lays out items in a staggered grid formation, allowing items of varying heights/widths to be placed without being clipped, creating a masonry-like effect.
+        You can also create custom `LayoutManager`s for unique layout requirements.
+
+100. **How do you implement pull-to-refresh functionality?**
+     Pull-to-refresh functionality is typically implemented using the `SwipeRefreshLayout` widget from the AndroidX support library.
+     Steps:
+     1\.  **Wrap Content:** Wrap your scrollable content (`RecyclerView`, `ScrollView`, `NestedScrollView`, etc.) inside a `SwipeRefreshLayout` in your layout XML.
+
+     ```xml
+     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+         android:id="@+id/swipeRefreshLayout"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+         <androidx.recyclerview.widget.RecyclerView
+             android:id="@+id/recyclerView"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent" />
+     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+     ```
+
+<!-- end list -->
+
+````
+2.  **Set Listener:** In your Activity/Fragment, get a reference to the `SwipeRefreshLayout` and set an `OnRefreshListener`.
+    ```kotlin
+    binding.swipeRefreshLayout.setOnRefreshListener {
+        // Perform your data refresh operation (e.g., fetch new data from network)
+        fetchNewData()
+    }
+    ```
+3.  **Stop Refreshing:** Once your data refresh operation is complete (e.g., network call success/failure), you *must* call `swipeRefreshLayout.isRefreshing = false` to hide the refresh indicator.
+    ```kotlin
+    fun fetchNewData() {
+        // ... (your async data fetching logic)
+        // On completion:
+        binding.swipeRefreshLayout.isRefreshing = false
+    }
+    ```
+````
+
+101. **What is CoordinatorLayout and its use cases?**
+     `CoordinatorLayout` is a super-powered `FrameLayout` from the Material Design library. It's designed to orchestrate the interactions between its child views, enabling complex scrolling behaviors and visual effects (e.g., AppBarLayout reacting to scrolling, FloatingActionButton moving).
+     **Use cases:**
+     \* **Collapsing Toolbars/App Bars:** When you want a `Toolbar` to shrink or expand as the user scrolls.
+     \* **Floating Action Buttons (FABs) with SnackBar:** Automatically moves the FAB up when a `SnackBar` appears.
+     \* **Parallax Scrolling Effects:** Creating effects where background content scrolls at a different rate than foreground content.
+     \* **Custom View Interactions:** Implementing custom interactions between any child views using `CoordinatorLayout.Behavior`.
+     It achieves these effects by implementing a "behavior" system where child views can declare how they should interact with other child views or respond to scrolling events.
+
+102. **How do you implement sliding panels and collapsing toolbars?**
+     \* **Sliding Panels:** Typically implemented using `DrawerLayout` for navigation drawers (sliding from edge) or `BottomSheetBehavior` (from Material Design, for sliding from bottom of screen).
+
+       * `DrawerLayout` hosts a main content view and a navigation view that slides over it.
+       * `BottomSheetBehavior` can be applied to a child `View` within a `CoordinatorLayout` to make it behave as a persistent or modal bottom sheet.
+         \* **Collapsing Toolbars:** Implemented using `CoordinatorLayout` in combination with `AppBarLayout` and `CollapsingToolbarLayout`.
+
+     <!-- end list -->
+
+     ```xml
+     <androidx.coordinatorlayout.widget.CoordinatorLayout>
+         <com.google.android.material.appbar.AppBarLayout>
+             <com.google.android.material.appbar.CollapsingToolbarLayout
+                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                 <ImageView app:layout_collapseMode="parallax" .../>
+                 <androidx.appcompat.widget.Toolbar app:layout_collapseMode="pin" .../>
+             </com.google.android.material.appbar.CollapsingToolbarLayout>
+         </com.google.android.material.appbar.AppBarLayout>
+         <androidx.core.widget.NestedScrollView app:layout_behavior="@string/appbar_scrolling_view_behavior">
+             </androidx.core.widget.NestedScrollView>
+     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+     ```
+
+     `app:layout_scrollFlags` on `CollapsingToolbarLayout` and `app:layout_behavior` on the scrollable content are key.
+
+103. **What are Motion Layouts and their advantages?**
+     `MotionLayout` is a layout type in the AndroidX ConstraintLayout library that allows you to manage motion and widget animation in your app. It's a declarative way to define complex transitions between UI states (like expanding/collapsing elements, swipe-to-reveal) directly in XML.
+     **Advantages:**
+     \* **Simplified Complex Animations:** Enables creation of sophisticated animations that would be difficult or verbose with traditional animation APIs (Property Animators, etc.).
+     \* **Declarative:** Define animations in XML, separating motion logic from code.
+     \* **Interpolation and Keyframes:** Easily define various states (keyframes) and how views should animate between them.
+     \* **Interaction Driven:** Animations can be driven by user input (e.g., swipe gestures) or programmatically.
+     \* **Backward Compatibility:** Works down to API 14.
+     \* **Visual Editor:** Android Studio's Motion Editor provides a visual tool to design these animations.
+
+104. **How do you handle different screen sizes and orientations?**
+     Handling different screen sizes and orientations involves providing alternative resources and using flexible layouts:
+     \* **`dp` and `sp` units:** Always use `dp` for dimensions and `sp` for text sizes for density independence.
+     \* **Flexible Layouts:** Use `ConstraintLayout` or `FlexboxLayout` (third-party) which can adapt dynamically to available space. Avoid hardcoded `px` values.
+     \* **Resource Qualifiers:** Provide alternative layout, dimension, drawable, or string resources using qualifiers based on screen size (`sw600dp` for 600dp minimum width), orientation (`land` for landscape, `port` for portrait), screen density (`hdpi`, `xhdpi`), or smallest width (`w600dp`).
+
+       * `res/layout/my_layout.xml` (default)
+       * `res/layout-land/my_layout.xml` (for landscape)
+       * `res/layout-sw600dp/my_layout.xml` (for tablets/large screens)
+         \* **`Fragment`s:** Use Fragments to encapsulate UI parts that can be combined differently on larger screens (e.g., master-detail flow).
+         \* **`Configuration Changes`:** Understand how Activities handle configuration changes (recreation by default). Use `ViewModel` or `onSaveInstanceState()` to preserve UI state.
+
+## Data Storage & Persistence
+
+105. **What are different ways to store data in Android?**
+     Android offers several options for data storage, each suited for different needs:
+     \* **`SharedPreferences`:** For storing small amounts of private primitive data (key-value pairs).
+     \* **Internal Storage:** For storing private application data directly on the device's internal memory. Files are typically only accessible by the app itself.
+     \* **External Storage:** For storing larger files that are intended to be shared or accessible by other apps (e.g., public photos, downloads). Requires permissions.
+     \* **SQLite Databases:** For storing structured, private data in a relational database. Ideal for complex data relationships.
+     \* **Room Persistence Library:** An abstraction layer over SQLite that simplifies database interactions, part of Android Jetpack.
+     \* **`DataStore`:** A modern replacement for `SharedPreferences`, offering asynchronous and type-safe data storage using Kotlin Flow and Protocol Buffers (for `Proto DataStore`).
+     \* **Network Storage/Cloud:** Storing data on remote servers (e.g., Firebase, custom backend) for synchronization, backups, and multi-device access.
+
+106. **What is SharedPreferences and its pros and cons?**
+     `SharedPreferences` is an API in Android used for storing small collections of primitive data (booleans, floats, ints, longs, strings) as key-value pairs. It's suitable for app settings, user preferences, or simple state.
+     \* **Pros:**
+
+       * Simple to use for small amounts of data.
+       * Fast for reading and writing primitive types.
+       * Data persists across app sessions.
+       * Private to the application by default.
+         \* **Cons:**
+       * Not designed for complex data or large datasets.
+       * Not thread-safe (can lead to ANRs if misused on main thread).
+       * Synchronous API calls on the main thread can cause UI jank.
+       * No type safety without manual casting/handling.
+       * No support for migrations or schema changes.
+       * Not suitable for sensitive data without encryption (use EncryptedSharedPreferences).
+
+107. **What is the difference between commit() and apply() in SharedPreferences?**
+     Both `commit()` and `apply()` save changes to `SharedPreferences`, but they differ in how they perform the write operation:
+     \* **`commit()`:** Writes the preferences **synchronously** to disk. It blocks the calling thread until the write is complete and returns a boolean indicating success or failure. If called on the main thread, it can cause ANRs (Application Not Responding) if the disk operation is slow.
+     \* **`apply()`:** Writes the preferences **asynchronously** to disk. It returns immediately, allowing the calling thread (including the main thread) to continue without blocking. It does not return a boolean indicating success or failure. The write happens in the background. This is generally the preferred method for most use cases to avoid blocking the UI.
+
+108. **What is SQLite and how is it used in Android?**
+     SQLite is an open-source, lightweight, embedded relational database management system. It's a self-contained, serverless, zero-configuration, transactional SQL database engine.
+     In Android, SQLite is used for storing structured, private application data persistently on the device. Developers interact with it using:
+     \* **`SQLiteOpenHelper`:** A helper class to manage database creation and version management.
+     \* **`SQLiteDatabase`:** The class representing the SQLite database, through which you execute SQL queries directly (e.g., `insert()`, `query()`, `update()`, `delete()`, `execSQL()`).
+     While `SQLiteDatabase` provides low-level control, for modern Android development, the Room Persistence Library (which builds on SQLite) is strongly preferred for its simplicity and robustness.
+
+109. **What is Room Persistence Library and why is it preferred?**
+     Room Persistence Library is part of Android Jetpack's Architecture Components. It's an abstraction layer over SQLite, providing an object-mapping layer that greatly simplifies database interactions in Android apps.
+     **Why it's preferred:**
+     \* **Compile-time SQL Validation:** Room validates your SQL queries at compile time, catching errors early.
+     \* **Reduced Boilerplate:** It generates a lot of the boilerplate code needed for database interaction (e.g., SQL queries, cursor conversions).
+     \* **Type Safety:** Works with Kotlin/Java objects, reducing manual type conversions and potential runtime errors.
+     \* **Observable Queries:** Integrates seamlessly with `LiveData` or Kotlin Flow, allowing your UI to react to database changes in real-time.
+     \* **Asynchronous Support:** Provides built-in support for running database operations on background threads, preventing ANRs.
+     \* **Easier Migrations:** Simplifies database schema migrations.
+
+110. **How can you encrypt data in Android applications?**
+     Encrypting data in Android applications is crucial for sensitive information. Methods include:
+     \* **`EncryptedSharedPreferences`:** (Jetpack Security) For encrypting key-value pairs, built on top of `SharedPreferences`. Recommended for small, sensitive data like API keys, tokens.
+     \* **AndroidX Security Crypto Library:** Provides low-level cryptographic primitives (e.g., `MasterKey` generation, `FileEncryptionHelper`) for encrypting files or streams.
+     \* **SQLCipher for Android (Third-party):** A popular open-source extension to SQLite that provides full database encryption.
+     \* **Keystore System:** The Android Keystore system securely stores cryptographic keys (public/private keys, symmetric keys) in a hardware-backed keystore, making them resistant to extraction and protecting them from malware. Keys stored here are used to encrypt/decrypt application data.
+     \* **Manual Encryption:** Using standard Java Cryptography Architecture (JCA) APIs like `Cipher` and `MessageDigest`, but this requires careful implementation to avoid common cryptographic pitfalls. Generally, using higher-level libraries is safer.
+
+111. **How does Room handle database migrations?**
+     Room handles database migrations by requiring you to define `Migration` classes. A `Migration` class specifies the necessary SQL commands to transform the database schema from one version to another.
+     1\.  **Define `Migration`:** Create a `Migration` object for each version upgrade path, providing the `startVersion` and `endVersion` and implementing the `migrate(SupportSQLiteDatabase database)` method with SQL `ALTER TABLE`, `CREATE TABLE`, `DROP TABLE` statements.
+     2\.  **Add to Database Builder:** Provide these `Migration` objects to your `Room.databaseBuilder()` call:
+     `Room.databaseBuilder(context, AppDatabase::class.java, "my-db").addMigrations(MIGRATION_1_2, MIGRATION_2_3).build()`
+     Room then automatically applies the correct migrations when the database version changes. If a migration path is not provided and the schema changes, Room will throw an `IllegalStateException` or simply clear the database (if `fallbackToDestructiveMigration()` is used).
+
+112. **How do you manage relationships in Room?**
+     Room supports managing relationships (one-to-one, one-to-many, many-to-many) between entities, but unlike some ORMs, it **does not directly support object references** between entities. Instead, you manage relationships by:
+     \* **Foreign Keys:** Define foreign key constraints using the `foreignKeys` array in the `@Entity` annotation to enforce referential integrity between tables.
+     \* **Embedded Objects (`@Embedded`):** To represent a complex object that is part of an entity but doesn't have its own table.
+     \* **POJOs (Plain Old Java Objects) with `@Relation`:** To query data across relationships, you define a POJO that contains the parent entity and a list of child entities (or a single child entity). You annotate fields in this POJO with `@Relation` to specify the `parentColumn`, `entityColumn`, and optionally `associateBy` (for many-to-many). Room then generates the join queries for you.
+     \* **Manual Joins:** You can still write custom SQL queries with `JOIN` clauses in your DAO methods if `@Relation` doesn't fit your needs.
+
+113. **What is DAO (Data Access Object) in Room?**
+     A DAO (Data Access Object) in Room is an interface or abstract class that provides methods for interacting with your database. It's the primary component through which you define your database queries and operations.
+     **Key characteristics:**
+     \* **Abstracts SQL:** You don't write raw SQL for common operations like insert, update, delete. Instead, you annotate methods with `@Insert`, `@Update`, `@Delete`.
+     \* **Custom Queries:** For complex queries, you use the `@Query` annotation and write SQL (Room validates it at compile time).
+     \* **Return Types:** DAO methods can return simple data, `LiveData`, or `Flow` for reactive updates.
+     \* **One DAO per Entity (or related entities):** Typically, you create one DAO per major entity or for a group of closely related entities.
+     Room automatically generates the implementation of the DAO interface/abstract class at compile time.
+
+114. **Explain Scoped Storage in Android and its implications.**
+     Scoped Storage is a privacy-enhancing feature introduced in Android 10 (API 29) and enforced in Android 11 (API 30) onwards. It restricts an app's access to the device's external storage.
+     **Implications:**
+     \* **App-specific Directories:** Apps are primarily granted access only to their own app-specific directory on external storage (`getExternalFilesDir()`, `getExternalCacheDir()`). These directories are removed when the app is uninstalled.
+     \* **MediaStore for Shared Media:** To access shared media files (images, videos, audio) belonging to *other* apps or created by the user (e.g., camera photos), apps must use the `MediaStore` API. `MediaStore` provides a content URI for each media file, allowing apps to read or write specific files with user consent.
+     \* **Downloads/Documents:** For non-media files (e.g., PDFs, documents) in the "Downloads" or "Documents" folder, apps must use the `Storage Access Framework (SAF)` to let the user select files for the app to access.
+     \* **Limited Direct Access:** Direct file path access to common public directories (like `Pictures`, `DCIM`) is largely restricted without explicit user selection.
+     \* **Legacy Mode (`requestLegacyExternalStorage`):** Android 10 offered a temporary opt-out via `requestLegacyExternalStorage="true"` for compatibility, but this was removed in Android 11.
+
+115. **How can encrypted SharedPreferences be used?**
+     `EncryptedSharedPreferences` is a secure implementation of `SharedPreferences` provided by the Android Jetpack Security library. It automatically encrypts keys and values using the Android Keystore system.
+     **How to use it:**
+     1\.  **Setup Keystore Master Key:** First, create a `MasterKey` that will be used for encryption. This key is securely stored in the Android Keystore.
+
+     ```kotlin
+     val masterKey = MasterKey.Builder(context)
+         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+         .build()
+     ```
+
+<!-- end list -->
+
+````
+2.  **Create EncryptedSharedPreferences:** Use `EncryptedSharedPreferences.create()` to get an instance, passing the `MasterKey` and a file name.
+    ```kotlin
+    val sharedPreferences = EncryptedSharedPreferences.create(
+        context,
+        "my_encrypted_prefs", // Filename
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+    ```
+3.  **Use Like Regular SharedPreferences:** Once created, you use the `sharedPreferences` instance exactly like regular `SharedPreferences` to put and get values. The encryption/decryption happens automatically under the hood.
+````
+
+116. **What is DataStore and how does it compare to SharedPreferences?**
+     `DataStore` is a new and improved data storage solution from Android Jetpack, designed to replace `SharedPreferences`. It provides a safe, asynchronous, and consistent way to store data.
+     **Key Differences/Comparison:**
+     | Feature            | SharedPreferences                                 | DataStore                                       |
+     | :----------------- | :------------------------------------------------ | :---------------------------------------------- |
+     | **API Type** | Synchronous (commit), Asynchronous (apply)        | Fully Asynchronous (Kotlin Flow, Coroutines)    |
+     | **Thread Safety** | Not inherently thread-safe (can cause ANR with commit) | Thread-safe by design                             |
+     | **Safety** | No compile-time type safety; runtime errors possible | Type-safe (Proto DataStore)                     |
+     | **Data Type** | Primitives (Boolean, Int, String, etc.)           | Primitives (Preferences DataStore), Custom types (Proto DataStore) |
+     | **Error Handling** | No direct error handling with apply               | Built-in error handling (Flow's catch)          |
+     | **Consistency** | No transactional API, inconsistent state possible | Transactional API, atomic updates               |
+     | **Usage** | Simple key-value pairs                            | Key-value pairs (Preferences DS), structured objects (Proto DS) |
+     | **Encryption** | Requires `EncryptedSharedPreferences`             | Supports encryption (via `Security` library)    |
+     **Conclusion:** `DataStore` is the recommended modern solution due to its asynchronous nature, thread safety, and consistency, especially when using Kotlin Coroutines and Flow.
+
+117. **What are best practices for storing application data securely?**
+     \* **Use `EncryptedSharedPreferences`:** For small, sensitive key-value pairs (e.g., user tokens, API keys).
+     \* **Use AndroidX Security Crypto Library:** For encrypting files or streams with keys from the Android Keystore.
+     \* **Utilize Android Keystore System:** For securely storing cryptographic keys, protecting them from unauthorized access or extraction.
+     \* **Avoid storing sensitive data on external storage:** External storage (`Environment.getExternalStorageDirectory()`) is world-readable/writable. Use internal storage or encrypted external storage if necessary.
+     \* **Encrypt databases:** If using SQLite, consider libraries like SQLCipher for full database encryption.
+     \* **Do not hardcode sensitive data:** Avoid embedding API keys, secrets directly in your code. Use build configurations or retrieve them from secure backend services.
+     \* **Use HTTPS/TLS for network communication:** Encrypt data in transit.
+     \* **Implement proper authentication and authorization:** On the server side.
+     \* **Minimize data storage:** Only store what's absolutely necessary.
+     \* **Obfuscation/ProGuard/R8:** While not encryption, these tools make reverse engineering harder.
+
+118. **Can you access SQLite database for debugging?**
+     Yes, you can access your app's SQLite database for debugging purposes.
+     Common methods:
+     \* **Device File Explorer in Android Studio:** Navigate to `data/data/<your-package-name>/databases/` to download the `.db` file. You can then open it with a desktop SQLite browser (e.g., DB Browser for SQLite).
+     \* **App Inspection in Android Studio:** (Recommended for Room) This built-in tool in Android Studio allows you to inspect, query, and modify your Room databases and `SharedPreferences` in real-time while your app is running on an emulator or a connected device. This is the most convenient method.
+     \* **ADB commands:** Use `adb shell` to navigate to the database directory and `adb pull` to copy the database file to your local machine.
+
+119. **How do you handle database versioning and schema changes?**
+     Database versioning and schema changes (migrations) are handled by incrementing the database version number and providing migration paths.
+     \* **Increment Version:** In your `RoomDatabase` annotation, increment `version = X+1`.
+     \* **Create `Migration` classes:** For each version upgrade path (e.g., from version 1 to 2, 2 to 3), create a `Migration` object that contains the SQL statements (`ALTER TABLE`, `CREATE TABLE`, `DROP TABLE`) needed to transform the schema from the old version to the new one.
+     \* **Add Migrations to Builder:** Provide these `Migration` objects to your `Room.databaseBuilder()` instance:
+     `Room.databaseBuilder(...).addMigrations(MIGRATION_1_2, MIGRATION_2_3).build()`
+     \* **Destructive Migration:** If a migration path is not available or you want to wipe existing data on schema change (e.g., during development), you can use `fallbackToDestructiveMigration()` in the builder. This will rebuild the database from scratch, deleting all existing data.
+
+120. **What is Content Resolver and its role in data access?**
+     A `ContentResolver` is a class in Android that provides an abstraction layer for accessing data from a `ContentProvider`. It acts as a client-side interface to perform "CRUD" (Create, Read, Update, Delete) operations on data managed by Content Providers.
+     **Its role in data access:**
+     \* **Centralized Access:** It's the standard way for applications to interact with data that is exposed by `ContentProvider`s, regardless of where that data is actually stored (e.g., SQLite database, files, network).
+     \* **Inter-App Communication:** It enables secure and controlled sharing of data between different applications. For example, an app can use `ContentResolver` to query the Contacts provider to read user contacts.
+     \* **Security:** `ContentProvider`s can enforce permissions, and `ContentResolver` mediates access, ensuring only authorized apps can access specific data.
+     \* **Abstraction:** It abstracts the underlying storage mechanism, so clients don't need to know if the data is in SQLite, a file, or a network service.
+
+## Asynchronous Programming & Concurrency
+
+121. **Why should long-running operations not be performed on main thread?**
+     Long-running operations (e.g., network requests, heavy database queries, complex calculations, file I/O) should **never** be performed on the main thread (also known as the UI thread) because:
+     \* **ANR (Application Not Responding):** If the main thread is blocked for too long (typically more than 5 seconds), the system will display an "Application Not Responding" dialog, giving the user the option to close your app.
+     \* **Unresponsive UI:** While the main thread is busy, the UI becomes frozen. The user cannot interact with buttons, scroll, or see animations, leading to a poor user experience.
+     \* **Jank/Stuttering:** Even shorter blocking operations can cause visible jank (skipped frames) in animations and scrolling, making the app feel sluggish.
+     The main thread is responsible for drawing the UI and handling user input, so it must remain free to respond quickly.
+
+122. **What is ANR (Application Not Responding) and how to avoid it?**
+     An ANR (Application Not Responding) is a dialog that Android displays to the user when an application has been unresponsive for a significant period. This happens when the main thread (UI thread) is blocked and cannot process user input or draw the UI within a certain timeframe (typically 5 seconds for input events or broadcast receiver execution).
+     **How to avoid it:**
+     \* **Perform all long-running operations on background threads:** Use Kotlin Coroutines, WorkManager, Executors, or Services for network requests, database operations, heavy computations, and large file I/O.
+     \* **Keep main thread lightweight:** Ensure UI updates are minimal and quick.
+     \* **Optimize UI drawing:** Avoid complex or nested view hierarchies that take too long to measure and draw.
+     \* **Avoid heavy operations in Activity/Fragment lifecycle methods:** Especially `onCreate()`, `onResume()`.
+     \* **Use `StrictMode` for debugging:** During development, `StrictMode` can help detect accidental disk or network access on the main thread.
+
+123. **What is a Thread in Android and how does it differ from Process?**
+     \* **`Thread`:** A single sequential flow of control within a program. It's a lightweight unit of execution that shares the same memory space and resources (e.g., heap, open files) as other threads within the same process. An Android application typically starts with a single main thread (UI thread) but can create additional background threads for concurrent operations.
+     \* **`Process`:** An isolated execution environment that has its own virtual memory space, resources, and typically runs independently. In Android, each application runs in its own Linux process by default, providing security and isolation. If one process crashes, it generally doesn't affect other processes. A process can contain one or more threads.
+
+124. **How do you perform background operations in Android?**
+     Several modern and traditional ways to perform background operations in Android:
+     \* **Kotlin Coroutines (Recommended for modern Android):** Lightweight threads, excellent for asynchronous programming, managing concurrency, and handling long-running tasks.
+     \* **`WorkManager` (Recommended for deferrable, guaranteed work):** For tasks that need to run reliably even if the app exits or device restarts (e.g., data sync, uploading logs).
+     \* **`Service`:** For operations that need to run continuously in the background independent of the UI (e.g., music playback). Requires managing your own threads inside.
+     \* **`Executors` / `ThreadPoolExecutor`:** Standard Java concurrency utilities for managing pools of threads.
+     \* **`HandlerThread`:** A special type of Thread that has its own Looper and MessageQueue, useful for background work that requires sequential processing of messages.
+     \* **`AsyncTask` (Deprecated):** Older, simpler API for short-lived background tasks with UI updates, but prone to memory leaks and lifecycle issues. Avoid using it.
+
+125. **What are Kotlin Coroutines and their advantages?**
+     Kotlin Coroutines are a concurrency design pattern that allows you to write asynchronous, non-blocking code in a sequential and more readable manner. They are "lightweight threads" managed by the system, not the OS.
+     **Advantages:**
+     \* **Asynchronous Code Simplicity:** Transform complex callback-based or reactive code into sequential-looking code using `suspend` functions, making it much easier to read and maintain.
+     \* **Lightweight:** Coroutines are much lighter than threads. You can launch thousands of coroutines on a single thread.
+     \* **Structured Concurrency:** They promote structured concurrency, meaning coroutines launched within a scope are cancelled when the scope is cancelled, preventing resource leaks and ensuring all operations are completed or cancelled predictably.
+     \* **Non-blocking:** `suspend` functions don't block the underlying thread; they simply pause execution and resume later, freeing up the thread for other tasks.
+     \* **First-Party Support:** Integrated into Kotlin, with strong support in Android Jetpack libraries (`LifecycleScope`, `ViewModelScope`).
+
+126. **Explain the `suspend` keyword in Kotlin Coroutines.**
+     The `suspend` keyword in Kotlin Coroutines is a modifier that marks a function as "suspendable," meaning it can be *paused* and *resumed* later.
+     \* It does **not** mean the function will run on a different thread. A `suspend` function can run on any thread.
+     \* It signifies that the function might perform a long-running operation (like a network request, database call, or delay) that could potentially block the current thread if it were a regular function.
+     \* When a `suspend` function is called, it can pause its execution without blocking the thread it's running on, allowing the thread to perform other tasks. When the long-running operation completes, the `suspend` function can *resume* from where it left off.
+     \* `suspend` functions can only be called from other `suspend` functions or from a coroutine builder (like `launch` or `async`).
+
+127. **What is a CoroutineScope and why is it important?**
+     A `CoroutineScope` defines the lifecycle of coroutines. It's a way to group related coroutines, allowing you to manage their lifecycle collectively.
+     **Importance:**
+     \* **Structured Concurrency:** Ensures that all coroutines launched within a `CoroutineScope` are cancelled when the scope itself is cancelled. This prevents leaks (e.g., a coroutine continuing to run and update a UI that no longer exists) and ensures that all work for a given unit (like a `ViewModel` or `Activity`) is completed or stopped when that unit is destroyed.
+     \* **Resource Management:** Helps in cleaning up resources associated with coroutines when they are no longer needed.
+     \* **Common Scopes:** Android Jetpack provides built-in `CoroutineScope`s like `LifecycleScope` (scoped to Activity/Fragment lifecycle) and `ViewModelScope` (scoped to ViewModel lifecycle), making it easy to integrate coroutines with Android components.
+
+128. **What is the difference between `launch` and `async`?**
+     Both `launch` and `async` are coroutine builders used to start a new coroutine.
+     \* **`launch`:**
+
+       * Used to start a new coroutine that does not return a result.
+       * It's a "fire and forget" operation. If the coroutine throws an exception, it will propagate and potentially crash the application if not handled by a `CoroutineExceptionHandler`.
+       * Returns a `Job` object, which can be used to cancel or join the coroutine.
+       * **Use when:** You need to perform background work, but you don't need to get a result back from it immediately.
+         \* **`async`:**
+       * Used to start a new coroutine that performs work and returns a result.
+       * It returns a `Deferred<T>` object (a non-blocking future). You call `.await()` on the `Deferred` object to get the result.
+       * Exceptions are propagated when `.await()` is called. If `.await()` is never called, the exception won't be thrown until the `Deferred` is garbage collected.
+       * **Use when:** You need to perform background work and then use the result of that work.
+
+129. **What are Dispatchers (Main, IO, Default, Unconfined)?**
+     `Dispatchers` determine which thread or thread pool a coroutine will use for its execution.
+     \* **`Dispatchers.Main`:** The main thread (UI thread). Use for interacting with the UI and performing fast operations.
+
+       * **Example:** `lifecycleScope.launch(Dispatchers.Main) { updateUI(data) }`
+         \* **`Dispatchers.IO`:** A thread pool optimized for disk and network I/O operations.
+       * **Example:** `withContext(Dispatchers.IO) { database.insert(item) }`
+         \* **`Dispatchers.Default`:** A shared thread pool designed for CPU-intensive work that blocks the current thread (e.g., sorting large lists, complex calculations).
+       * **Example:** `withContext(Dispatchers.Default) { performHeavyCalculation() }`
+         \* **`Dispatchers.Unconfined`:** Runs the coroutine on the caller's thread initially. It only dispatches on a different thread when the coroutine encounters a suspension point. Not typically recommended for general use in Android due to its unpredictable thread switching, making it harder to reason about.
+
+130. **Explain Handler, Looper, and MessageQueue relationship.**
+     These three components form the backbone of Android's UI message processing system:
+     \* **`Looper`:** A class that continuously loops (hence "looper") through a `MessageQueue` and dispatches `Message`s and `Runnable`s to their corresponding `Handler`s. Every thread that wants to participate in the message passing system (like the main thread) needs a `Looper`.
+     \* **`MessageQueue`:** A queue that holds the list of `Message`s and `Runnable`s to be processed by a `Looper`. `Handler`s post messages to this queue.
+     \* **`Handler`:** An object that allows you to send and process `Message`s and `Runnable`s associated with a specific `Looper`'s `MessageQueue`. It enables communication between threads, allowing background threads to post tasks to the main thread's `Handler` to update the UI safely.
+
+131. **What is a HandlerThread and when is it useful?**
+     A `HandlerThread` is a convenience class that is essentially a `Thread` that has its own `Looper` and `MessageQueue` set up within it.
+     **When it's useful:**
+     \* When you need a background thread to perform operations sequentially.
+     \* When you need to send messages or runnables to a specific background thread in a controlled manner.
+     \* For tasks that need to run continuously in the background but are not suitable for `WorkManager` (e.g., a background service that continuously monitors a sensor and processes events sequentially).
+     It allows you to perform background work while receiving callbacks on that specific background thread, rather than the main thread.
+
+132. **How does Garbage Collector work in Android?**
+     Android uses a garbage collector (GC) to automatically reclaim memory used by objects that are no longer referenced by the application. ART (Android Runtime) uses a Concurrent Copying Garbage Collector.
+     **How it generally works:**
+     1\.  **Marking:** The GC identifies all objects that are still reachable (in use) by the application (starting from root references like static variables, active threads).
+     2\.  **Sweeping/Compacting:** It then reclaims memory occupied by unreachable (unused) objects. Modern GCs also perform "compaction" to move live objects closer together, reducing memory fragmentation.
+     3\.  **Concurrency:** ART's GC is largely "concurrent," meaning a significant portion of the garbage collection work runs in parallel with the application threads. This minimizes the "stop-the-world" (STW) pauses, which are periods where all app threads are temporarily frozen for GC, leading to smoother UI performance.
+     Efficient memory management and avoiding memory leaks are crucial to reduce GC pressure.
+
+133. **What is the onTrimMemory() method?**
+     The `onTrimMemory()` callback method is part of the `ComponentCallbacks2` interface, which is implemented by `Application`, `Activity`, and `Service`. It's a system callback that indicates that the operating system is running low on memory and is asking your application to release non-critical resources to help manage memory.
+     The method receives a `level` argument that indicates the severity of the memory pressure:
+     \* `TRIM_MEMORY_RUNNING_CRITICAL`, `TRIM_MEMORY_RUNNING_LOW`, `TRIM_MEMORY_RUNNING_MODERATE`: Indicate the app is running, but memory is getting tight.
+     \* `TRIM_MEMORY_BACKGROUND`, `TRIM_MEMORY_MODERATE`, `TRIM_MEMORY_COMPLETE`: Indicate the app is in the background and might be killed.
+     Responding to `onTrimMemory()` allows your app to gracefully release memory and reduce its likelihood of being killed by the system, improving user experience.
+
+134. **Can you manually call Garbage Collection?**
+     You can *suggest* to the Java Virtual Machine (JVM) or Android Runtime (ART) that it should run garbage collection by calling `System.gc()` or `Runtime.getRuntime().gc()`.
+     However, it's crucial to understand:
+     \* **It's only a suggestion:** The system is not *guaranteed* to run GC immediately. It will do so only if it deems it necessary.
+     \* **Not recommended in production code:** Manually calling GC is generally discouraged in production Android applications. It can be inefficient, disrupt the runtime's own memory management, and potentially cause jank.
+     \* **Use for Debugging/Testing:** It can be useful in specific debugging scenarios (e.g., after forcing a memory leak cleanup in tests) to verify memory reclamation.
+     The best practice is to focus on avoiding memory leaks and writing efficient code that minimizes memory allocations, allowing the automatic GC to manage memory effectively.
+
+135. **Explain "structured concurrency" in Kotlin Coroutines.**
+     Structured concurrency is a design principle in Kotlin Coroutines that ensures that all coroutines launched within a specific `CoroutineScope` are automatically cancelled when that `scope` is cancelled. This means:
+     \* **Parent-Child Relationship:** When you launch a new coroutine, it becomes a child of the `CoroutineScope` it was launched in.
+     \* **Automatic Propagation:** Cancellation flows downwards from parent to children. If a parent `Job` (part of the `CoroutineScope`) is cancelled, all its child coroutines are also cancelled.
+     \* **Error Handling:** Errors in child coroutines are propagated up to the parent `Job`, which can then cancel other children in the same scope.
+     \* **Resource Safety:** It helps prevent resource leaks by ensuring that all ongoing asynchronous operations tied to a specific lifecycle (e.g., an Activity or `ViewModel`) are properly cleaned up when that lifecycle ends. This simplifies error handling and prevents subtle bugs.
+
+136. **What is the difference between Thread and Coroutine?**
+     | Feature         | Thread                                            | Coroutine                                         |
+     | :-------------- | :------------------------------------------------ | :------------------------------------------------ |
+     | **Cost** | Heavyweight (managed by OS)                       | Lightweight (managed by the Coroutine library/runtime) |
+     | **Blocking** | Blocks the OS thread it runs on                   | Non-blocking (suspends and resumes)               |
+     | **Creation** | Expensive                                         | Cheap (can create thousands)                      |
+     | **Stack Size** | Fixed, relatively large stack                     | Small, flexible stack                             |
+     | **Management** | Manual management (start, stop, join, synchronize) | Managed by CoroutineScope, automatic cancellation |
+     | **Concurrency** | Achieved by running multiple threads concurrently | Achieved by suspending and resuming execution on a few threads |
+     \* **Threads** are actual operating system entities that run in parallel.
+     \* **Coroutines** are a higher-level abstraction for concurrency. They are cooperative; they allow multiple execution flows to run on a limited number of underlying threads by suspending and resuming.
+
+137. **What are race conditions and deadlocks? How to prevent them?**
+     These are common concurrency issues:
+     \* **Race Condition:** Occurs when two or more threads try to access and modify the same shared resource (e.g., a variable, a database entry, a file) concurrently, and the final outcome depends on the non-deterministic order in which the threads execute. This can lead to incorrect or unpredictable results.
+
+       * **Prevention:**
+           * **Synchronization:** Use `synchronized` blocks/methods, `ReentrantLock`, `Mutex` (in coroutines) to ensure only one thread accesses the critical section at a time.
+           * **Atomic Operations:** Use atomic classes (e.g., `AtomicInteger`) for single-variable updates.
+           * **Immutability:** Make shared data immutable.
+           * **Thread-safe Collections:** Use collections like `ConcurrentHashMap`.
+             \* **Deadlock:** A situation where two or more threads are permanently blocked, waiting for each other to release a resource. Each thread holds a resource that another thread needs, forming a circular dependency.
+       * **Prevention (avoiding the four conditions for deadlock):**
+           * **Mutual Exclusion (avoid when possible):** If a resource can be shared without exclusive access, do so.
+           * **Hold and Wait (prevent):** Don't allow a thread to hold one resource while waiting for another. Acquire all needed resources at once or release held ones if acquisition fails.
+           * **No Preemption (prevent):** Allow a resource to be forcibly taken from a thread holding it (if practical).
+           * **Circular Wait (break):** Establish a strict ordering for acquiring resources. All threads acquire resources in the same predefined order.
+
+138. **What are synchronization mechanisms available?**
+     Synchronization mechanisms ensure that only one thread can access a shared resource or a critical section of code at a time, preventing race conditions.
+     \* **`synchronized` keyword:** In Java/Kotlin, a built-in mechanism for locking methods or code blocks.
+
+       * `synchronized fun myMethod() { ... }` (locks on the object instance)
+       * `synchronized(lockObject) { ... }` (locks on the specified object)
+         \* **`java.util.concurrent.locks.Lock` interface (e.g., `ReentrantLock`):** More flexible and powerful than `synchronized` blocks, offering features like tryLock(), fairness, and condition variables.
+         \* **`java.util.concurrent.Semaphore`:** Controls access to a limited number of resources.
+         \* **`java.util.concurrent.atomic` package:** Classes like `AtomicInteger`, `AtomicLong`, `AtomicReference` provide atomic (thread-safe) operations on single variables without explicit locks.
+         \* **`Mutex` (in Kotlin Coroutines):** A mutual exclusion mechanism for coroutines, similar to a lock but designed for non-blocking suspension.
+         \* **Thread-safe Collections:** Collections like `ConcurrentHashMap`, `CopyOnWriteArrayList` are designed for concurrent access.
+
+139. **What is a Thread Pool and its benefits?**
+     A `ThreadPool` is a collection of worker threads that are created in advance and kept ready to execute tasks. Instead of creating a new thread for each task, tasks are submitted to the thread pool, which then assigns them to an available thread from its pool.
+     **Benefits:**
+     \* **Reduced Overhead:** Avoids the overhead of repeatedly creating and destroying threads, which are expensive operations.
+     \* **Improved Performance:** Tasks can be executed more quickly as threads are already running.
+     \* **Resource Management:** Limits the number of concurrent threads, preventing the system from being overwhelmed by too many active threads, which can lead to performance degradation or crashes.
+     \* **Queueing:** If all threads in the pool are busy, new tasks are placed in a queue and executed when a thread becomes available.
+     \* **Reusability:** Threads are reused across multiple tasks.
+     Commonly implemented using `java.util.concurrent.Executors` (e.g., `newFixedThreadPool`, `newCachedThreadPool`).
+
+140. **How do you ensure thread safety in Android?**
+     Ensuring thread safety means designing code such that shared data remains consistent even when accessed and modified by multiple threads concurrently.
+     Key strategies:
+     \* **Avoid Shared Mutable State:** The simplest way is to design your architecture to minimize or eliminate shared mutable state.
+     \* **Immutability:** Make data objects immutable. If data cannot be changed after creation, it's inherently thread-safe.
+     \* **Synchronization:** Use `synchronized` blocks/methods, `Lock` objects (`ReentrantLock`), or `Mutex` (Coroutines) to protect critical sections of code that access shared mutable resources.
+     \* **Atomic Operations:** For simple, single-variable updates, use `java.util.concurrent.atomic` classes (`AtomicInteger`, `AtomicReference`).
+     \* **Thread-Safe Collections:** Use concurrent collections (e.g., `ConcurrentHashMap`, `CopyOnWriteArrayList`) when multiple threads need to access collections.
+     \* **Message Passing:** Instead of direct shared memory, use `Handler`s, `Message`s, or `Channels` (Coroutines) to pass data between threads, ensuring operations on data are done on a single, dedicated thread.
+     \* **`ViewModel` and `LiveData`/`StateFlow`:** In Android, `ViewModel`s are designed to hold UI-related data and expose it via `LiveData` or `StateFlow`, which are designed to be thread-safe for observing changes on the main thread.
+
+141. **What is the relationship between AsyncTask and Activity problems?**
+     `AsyncTask` was an older, simplified helper class for performing short background operations and publishing results to the UI thread. However, it had a problematic relationship with Activity lifecycles, leading to common issues:
+     \* **Memory Leaks:** `AsyncTask` holds an implicit reference to the `Activity` (if it's an inner non-static class). If the `Activity` is destroyed (e.g., screen rotation) before the `AsyncTask` completes, the `Activity` cannot be garbage collected, leading to a memory leak.
+     \* **Lost Callbacks:** If the `Activity` is recreated, the `AsyncTask` might complete and try to update the *old*, non-existent `Activity` instance, or simply not be able to find the new `Activity` instance to update its UI.
+     \* **Configuration Changes:** `AsyncTask` doesn't inherently handle configuration changes well, requiring manual management or leading to the above issues.
+     Due to these problems and the availability of better solutions, `AsyncTask` has been deprecated since API 30. **Kotlin Coroutines with `ViewModel` and `WorkManager` are the modern, recommended alternatives.**
+
+## Networking & Web Services
+
+142. **How do Android apps make network requests?**
+     Android apps make network requests using various libraries and APIs, almost always performing these operations on a background thread to avoid ANRs.
+     Common ways:
+     \* **`HttpURLConnection` (Built-in):** The native Java API for making HTTP requests. It's available on all Android versions but is lower-level and requires more boilerplate code.
+     \* **`OkHttp` (Recommended):** A modern, efficient, and robust HTTP client library. It handles connection pooling, gzipping, caching, and retries automatically. Many higher-level libraries (like Retrofit) use OkHttp internally.
+     \* **`Retrofit` (Recommended):** A type-safe HTTP client for Android and Java. It simplifies making REST API calls by turning HTTP API into a Java interface. It works on top of OkHttp.
+     \* **`Volley` (Older, for simpler cases):** A library from Google for fast networking operations, especially for small requests and image loading. Less flexible for complex APIs than Retrofit.
+     \* **WorkManager:** Can be used to schedule and execute network requests reliably in the background, even if the app closes.
+     \* **Kotlin Coroutines:** Used in conjunction with networking libraries (like Retrofit) to perform asynchronous network calls in a clean, sequential manner.
+
+143. **What is Retrofit and why is it popular?**
+     `Retrofit` is a type-safe HTTP client library developed by Square for Android and Java. It simplifies the process of making network requests to RESTful APIs by turning HTTP API calls into declarative interface methods.
+     **Why it's popular:**
+     \* **Type Safety:** You define your API as an interface with annotated methods, reducing common errors.
+     \* **Less Boilerplate:** Automatically handles URL construction, request body serialization (JSON/XML), response parsing, and error handling.
+     \* **Easy Integration:** Seamlessly integrates with various JSON/XML parsing libraries (Gson, Moshi) and asynchronous programming models (Kotlin Coroutines, RxJava).
+     \* **Built on OkHttp:** Leverages OkHttp's efficiency for underlying network operations.
+     \* **Interceptors:** Allows adding custom logic for request/response modification (e.g., authentication tokens, logging).
+     \* **Flexibility:** Supports various HTTP methods, custom headers, query parameters, and multipart requests.
+
+144. **What is OkHttp and its role in networking?**
+     `OkHttp` is an efficient, modern HTTP client for Java and Kotlin, also developed by Square. It's a low-level networking library that handles the actual HTTP requests and responses.
+     **Its role in networking:**
+     \* **Underlying Engine:** It serves as the HTTP engine for many higher-level libraries (like Retrofit and Glide).
+     \* **Performance Optimization:** Handles features like connection pooling (reusing sockets), GZIP compression, response caching, and automatic retries for transient connection problems, leading to faster and more efficient network operations.
+     \* **Network Resilience:** Automatically recovers from common connection problems.
+     \* **Modern HTTP Features:** Supports HTTP/2, WebSockets.
+     \* **Interceptors:** Provides a powerful mechanism to intercept and modify requests and responses (e.g., for logging, adding headers, authentication).
+
+145. **What are RESTful APIs and HTTP methods?**
+     \* **RESTful APIs (Representational State Transfer):** A software architectural style for designing networked applications. It's an approach to communications between client and server that leverages standard HTTP protocols. RESTful APIs are stateless, client-server based, and utilize a uniform interface to interact with resources identified by URIs.
+     \* **HTTP Methods (Verbs):** Standard verbs used in RESTful APIs to indicate the desired action to be performed on a resource.
+
+       * **`GET`:** Retrieves a resource or a collection of resources (read-only).
+       * **`POST`:** Creates a new resource or sends data to be processed.
+       * **`PUT`:** Updates an existing resource (replaces the entire resource).
+       * **`PATCH`:** Partially updates an existing resource (applies a partial modification).
+       * **`DELETE`:** Removes a resource.
+       * **`HEAD`:** Similar to GET, but retrieves only the response headers, not the body.
+       * **`OPTIONS`:** Describes the communication options for the target resource.
+
+146. **What is JSON and why is it used for data exchange?**
+     JSON (JavaScript Object Notation) is a lightweight, human-readable, and machine-parsable data-interchange format. It is based on a subset of the JavaScript Programming Language Standard ECMA-262 3rd Edition - December 1999.
+     **Why it's used for data exchange:**
+     \* **Readability:** Easy for humans to read and write.
+     \* **Simplicity:** Simple data structures (key-value pairs, ordered lists).
+     \* **Parsability:** Easy for machines to parse and generate.
+     \* **Language Independent:** Supported by almost all programming languages, making it ideal for cross-platform communication between clients and servers.
+     \* **Lightweight:** Compared to XML, it has less overhead, resulting in smaller file sizes and faster parsing.
+     It has become the de facto standard for data exchange in web and mobile applications communicating with RESTful APIs.
+
+147. **How do you handle network errors and retries?**
+     Handling network errors and implementing retries are crucial for robust network requests.
+     **Handling Errors:**
+     \* **Try-Catch Blocks:** For basic error handling (e.g., `IOException` for connectivity issues, `HttpException` for HTTP error codes in Coroutines/Retrofit).
+     \* **Sealed Classes/Result Wrappers:** Define sealed classes or wrapper classes to represent different states of a network request (Success, Error, Loading) to explicitly handle various error scenarios (network unavailable, server error, parsing error).
+     \* **Retrofit ErrorBody:** Parse the `errorBody()` from a `Response` object in Retrofit to get detailed error messages from the server (e.g., JSON error responses).
+     \* **Global Error Handlers/Interceptors:** Use OkHttp interceptors to log errors or show generic error messages for all network requests.
+     **Retries:**
+     \* **OkHttp Interceptors:** Implement a custom `Interceptor` in OkHttp to retry requests for specific error codes or connectivity issues.
+     \* **Retrofit + Coroutines:** Use `retryWhen` or `retry` operators with `Flow` or implement custom retry logic with `delay()` in your `suspend` functions.
+     \* **WorkManager:** Built-in retry mechanisms with exponential backoff for failed work requests.
+
+148. **What is a Multipart request and when is it used?**
+     A `Multipart` request is an HTTP request format designed to send multiple distinct parts of data within a single request body. Each part can have its own content type and headers.
+     **When it is used:**
+     \* **File Uploads:** The most common use case. When you need to upload one or more files (e.g., images, documents, videos) along with other form data (e.g., text fields) in a single HTTP POST request.
+     \* **Complex Forms:** For forms that contain a mixture of text, binary data, and multiple fields that need to be sent together.
+     Libraries like Retrofit (with OkHttp) provide easy ways to construct and send multipart requests using `@Part` annotations.
+
+149. **How do you upload files using Retrofit?**
+     To upload files using Retrofit, you typically use `Multipart` requests.
+     1\.  **Define API Interface:**
+
+     ```kotlin
+     interface MyApiService {
+         @Multipart
+         @POST("upload")
+         suspend fun uploadFile(
+             @Part file: MultipartBody.Part,
+             @Part("description") description: RequestBody // For text parts
+         ): Response<ResponseBody> // Or your data class for the response
+     }
+     ```
+
+<!-- end list -->
+
+````
+2.  **Prepare `MultipartBody.Part`:**
+    ```kotlin
+    // Create RequestBody for file
+    val file = File(filePath) // Your actual file path
+    val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull()) // Or other media type
+    val filePart = MultipartBody.Part.createFormData("image", file.name, requestFile) // "image" is the server-expected field name
+
+    // Create RequestBody for description
+    val description = "My image description".toRequestBody("text/plain".toMediaTypeOrNull())
+    ```
+3.  **Make the Call:**
+    ```kotlin
+    val response = myApiService.uploadFile(filePart, description)
+    // Handle response
+    ```
+````
+
+150. **What is Gson and its purpose in JSON parsing?**
+     `Gson` (Google Gson) is a Java library that can be used to convert Java objects into their JSON representation and vice versa. It's a popular choice for JSON serialization and deserialization in Android applications.
+     **Its purpose in JSON parsing:**
+     \* **Serialization:** Converting Java/Kotlin objects (POJOs/data classes) into JSON strings (e.g., when sending data to a server).
+     \* **Deserialization:** Converting JSON strings received from an API into Java/Kotlin objects (e.g., when parsing a server response into your data models).
+     \* **Automatic Mapping:** It automatically maps JSON fields to corresponding object fields based on names, making it very convenient. You can also use annotations (`@SerializedName`) for custom mapping.
+     Retrofit integrates seamlessly with Gson using a `GsonConverterFactory`.
+
+151. **What is Volley Library in Android?**
+     `Volley` is an HTTP library developed by Google that helps Android apps manage network requests efficiently. It's designed for fast, simple networking, especially for applications that make many small requests and for image loading.
+     **Key features:**
+     \* **Automatic Request Queueing:** Manages a queue of network requests.
+     \* **Caching:** Built-in support for disk and memory caching of responses.
+     \* **Prioritization:** Allows setting priorities for requests.
+     \* **Cancellation:** Easy cancellation of individual or grouped requests.
+     \* **Image Loading:** Strong support for loading and caching images efficiently.
+     Compared to Retrofit/OkHttp, Volley is often seen as more suitable for simpler, fire-and-forget requests, while Retrofit offers more power and type safety for complex REST APIs.
+
+152. **Compare HTTP Long-Polling vs WebSockets vs Server-Sent Events.**
+     These are techniques for enabling real-time or near real-time communication between a client and a server over HTTP:
+     \* **HTTP Long-Polling:**
+
+       * **How it works:** The client makes a regular HTTP request, but the server holds the connection open until new data is available or a timeout occurs. Once data is sent (or timeout), the connection closes, and the client immediately opens a new request.
+       * **Pros:** Works with standard HTTP, no special server setup needed beyond typical web server.
+       * **Cons:** Not truly real-time (latency due to new connection for each update), more overhead per message, difficult to send data from client to server (requires a separate request).
+       * **Use Case:** Infrequent updates, low-to-medium real-time needs (e.g., simple chat, notification systems).
+         \* **WebSockets:**
+       * **How it works:** After an initial HTTP handshake, a persistent, bi-directional, full-duplex communication channel is established over a single TCP connection.
+       * **Pros:** Truly real-time, low latency, efficient (minimal overhead after handshake), bi-directional (client and server can send messages anytime).
+       * **Cons:** Requires a dedicated WebSocket server, not compatible with all proxies/firewalls.
+       * **Use Case:** High-frequency, bi-directional real-time applications (e.g., live chat, gaming, real-time dashboards).
+         \* **Server-Sent Events (SSE):**
+       * **How it works:** The client establishes a single, long-lived HTTP connection to the server. The server can then push data to the client over this connection whenever new data is available. It's a unidirectional (server-to-client) stream.
+       * **Pros:** Simpler than WebSockets (uses standard HTTP), automatically reconnects on network issues, built-in event stream format.
+       * **Cons:** Unidirectional (client-to-server requires separate HTTP requests), limited to text data by default.
+       * **Use Case:** Unidirectional real-time updates where the server pushes data frequently (e.g., stock tickers, live sports scores, news feeds).
+
+153. **How would you debug server errors in POST requests?**
+     Debugging server errors in POST requests involves examining both the client-side request and the server-side response:
+     1\.  **Check Client-Side Request:**
+
+       * **Verify URL and Endpoint:** Is the POST request going to the correct API endpoint?
+       * **Inspect Request Body:** Is the JSON/form data being sent correctly formatted and containing all required fields? Use a logging `Interceptor` with OkHttp to print the full request body.
+       * **Check Headers:** Are necessary headers (e.g., `Content-Type`, `Authorization` tokens) being sent?
+         2\.  **Examine Server Response:**
+       * **HTTP Status Code:** Is it a 4xx (client error) or 5xx (server error) code? The code provides a high-level clue.
+       * **Response Body:** The most crucial part. The server will often return an error message, validation failures, or stack traces in the response body (often in JSON format). Log the full `response.errorBody().string()` from Retrofit.
+       * **Server Logs:** Access the server-side logs. These will often show more detailed error messages, exceptions, or database errors.
+         3\.  **Tools:**
+       * **OkHttp Logging Interceptor:** In development, add an `HttpLoggingInterceptor` to your OkHttp client to log all request and response details.
+       * **Charles Proxy/Fiddler/Proxyman:** Use a network proxy tool to intercept and inspect HTTP/HTTPS traffic between your app and the server. This gives you a clear view of exactly what's being sent and received.
+       * **Postman/Insomnia:** Replicate the POST request using a dedicated API client to isolate if the issue is client-specific or a general API problem.
+
+154. **What are security considerations for network requests?**
+     Securing network requests is vital for protecting user data and app integrity:
+     \* **HTTPS/TLS:** Always use HTTPS (TLS) for all network communication to encrypt data in transit, preventing eavesdropping and tampering. Never use plain HTTP for sensitive data.
+     \* **Certificate Pinning:** For highly sensitive applications, implement Certificate Pinning. This validates the server's certificate against a known, pre-specified certificate or public key within the app, preventing Man-in-the-Middle (MITM) attacks.
+     \* **Data Validation:** Validate all data received from the server on the client side to prevent malformed or malicious data from causing crashes or vulnerabilities.
+     \* **Authentication/Authorization:** Implement secure authentication mechanisms (e.g., OAuth2, JWT) and ensure proper authorization checks on the server side. Store authentication tokens securely (e.g., `EncryptedSharedPreferences`).
+     \* **No Hardcoded Secrets:** Never hardcode API keys, secrets, or sensitive credentials directly into the app's code. Retrieve them securely from a backend or use build configuration for non-sensitive values.
+     \* **Input Sanitization:** Sanitize all user input before sending it to the server to prevent injection attacks.
+     \* **Error Handling:** Implement robust error handling to avoid exposing sensitive information in error messages.
+     \* **Obfuscation/Minification (R8):** Use R8 to obfuscate your code, making reverse engineering more difficult (though not impossible).
+
+155. **What are benefits of network caching strategies?**
+     Network caching strategies involve storing responses from network requests locally on the device so that they can be served without re-fetching from the network.
+     **Benefits:**
+     \* **Improved Performance/Responsiveness:** Reduces latency by serving content immediately from cache, making the app feel faster and more responsive.
+     \* **Reduced Network Usage:** Minimizes data consumption, which saves battery life and reduces user data costs.
+     \* **Offline Support:** Enables the app to display content even when there is no network connectivity, providing a better user experience (offline-first).
+     \* **Reduced Server Load:** Less frequent requests to the backend reduce the load on your servers.
+     \* **Better User Experience:** Provides a seamless experience, especially in areas with spotty network coverage.
+     Caching can be implemented using HTTP caching headers, OkHttp's built-in cache, or by storing data in databases (like Room).
+
+156. **How do you implement offline-first architecture?**
+     An offline-first architecture designs an application to function fully or partially even when there's no network connectivity. It prioritizes local data storage and synchronization.
+     **Implementation involves:**
+     \* **Local Data Store (Source of Truth):** Use a robust local database (like Room) as the primary source of truth for all application data. All UI interactions and data reads happen from this local database.
+     \* **Synchronization Layer:** Implement a synchronization mechanism (e.g., using WorkManager for one-time or periodic sync, or WebSockets for real-time sync) to:
+
+       * Fetch new data from the network and store it in the local database.
+       * Push local changes (user-generated data) to the server.
+       * Handle conflicts during synchronization.
+         \* **Network Awareness:** Use `ConnectivityManager` to monitor network availability and trigger sync operations when online.
+         \* **Optimistic UI:** Update the UI immediately based on local changes, assuming the server operation will succeed, and handle potential failures gracefully.
+         \* **`LiveData`/`Flow` from Database:** Connect your UI components to observe data changes from the local database, ensuring the UI always reflects the current local state.
+
+157. **What is Certificate Pinning and why is it important?**
+     Certificate pinning (also known as SSL pinning or Public Key Pinning) is a security mechanism used to prevent Man-in-the-Middle (MITM) attacks. It's an enhancement to the standard HTTPS/TLS security.
+     **How it works:** Instead of relying on the system's trust store for Certificate Authorities, the application explicitly "pins" (stores) the expected server certificate (or its public key) directly within its code. When the app makes an HTTPS connection, it validates the server's certificate not only against the CA but also against the pinned certificate/key. If they don't match, the connection is aborted, even if the certificate is issued by a trusted CA.
+     **Why it's important:**
+     \* **Prevents MITM Attacks:** If a malicious actor compromises a Certificate Authority or tricks a user into installing a rogue CA certificate, pinning prevents them from issuing fake certificates for your domain and intercepting traffic.
+     \* **Enhanced Security:** Adds an extra layer of security, especially crucial for apps handling highly sensitive data (e.g., banking, healthcare).
+     \* **Detects Compromise:** Can help detect if a network or server has been compromised.
+     It adds complexity to maintenance (pins need updating when certificates change) but provides a significant security boost.
+
+## Architecture Patterns & Design
+
+158. **What is Android Jetpack and its key benefits?**
+     Android Jetpack is a suite of libraries, tools, and architectural guidance to help developers build high-quality, robust, and testable Android applications more easily. It's designed to accelerate development, eliminate boilerplate code, and allow developers to focus on what matters most.
+     **Key Benefits:**
+     \* **Accelerated Development:** Provides ready-to-use components and best practices.
+     \* **Reduced Boilerplate:** Many components automate common tasks (e.g., `ViewModel`, `LiveData`, `Room`).
+     \* **Consistency & Best Practices:** Encourages modern architecture patterns and helps developers write maintainable code.
+     \* **Backward Compatibility:** Most Jetpack libraries are backward compatible, allowing you to use new features on older Android versions.
+     \* **Lifecycle Awareness:** Components like `LiveData` and `ViewModel` are lifecycle-aware, reducing memory leaks and simplifying state management.
+     \* **Robustness:** Designed for reliability and testability.
+
+159. **What are Android Architecture Components?**
+     Android Architecture Components are a collection of libraries within Android Jetpack that help developers design robust, testable, and maintainable applications by providing solutions for common architectural problems, especially around UI data management and lifecycle awareness.
+     Key Architecture Components include:
+     \* **`ViewModel`:** Stores and manages UI-related data in a lifecycle-conscious way.
+     \* **`LiveData`:** An observable data holder that is lifecycle-aware.
+     \* **`Room`:** An SQLite object mapping library for persistent data storage.
+     \* **`Lifecycle`:** Classes that manage Activity/Fragment lifecycle events.
+     \* **`Navigation`:** A framework for navigating between destinations within an app.
+     \* **`Paging`:** For loading and displaying large datasets efficiently.
+     \* **`WorkManager`:** For deferrable, guaranteed background work.
+     \* **`DataStore`:** A modern replacement for `SharedPreferences`.
+
+160. **What is MVVM architecture and how does it work?**
+     MVVM (Model-View-ViewModel) is an architectural pattern for UI development that separates the UI (View) from the business logic and data (Model) using an intermediary called the ViewModel.
+     **How it works:**
+     \* **Model:** Represents the data and business logic of the application. It's responsible for fetching data, storing it, and providing methods to manipulate it. It's independent of the UI.
+     \* **View:** The UI layer (Activity, Fragment, custom View). It's responsible for displaying the data from the ViewModel and sending user events (clicks, input) to the ViewModel. The View observes changes in the ViewModel.
+     \* **ViewModel:** Acts as an intermediary between the Model and the View. It holds UI-related state and logic, prepares data from the Model for the View, and exposes this data via observable mechanisms (like `LiveData` or `StateFlow`). It receives user input from the View and passes it to the Model or handles it itself. The ViewModel is lifecycle-aware, surviving configuration changes.
+     **Data Flow:** View (user action) -\> ViewModel -\> Model (data/logic) -\> ViewModel (prepared data) -\> View (observes data).
+
+161. **Compare MVC vs MVP vs MVVM vs MVI architectures.**
+     These are common architectural patterns, each addressing separation of concerns:
+
+<!-- end list -->
+
+```
+* **MVC (Model-View-Controller):**
+    * **Model:** Data logic.
+    * **View:** UI (passive).
+    * **Controller:** Handles user input, interacts with Model, and updates View.
+    * **Pros:** Traditional, widely understood.
+    * **Cons:** Controller can become a "Massive Controller" (God object), tight coupling between View and Controller, often hard to test View.
+
+* **MVP (Model-View-Presenter):**
+    * **Model:** Data logic.
+    * **View:** UI (passive interface, e.g., an Activity implements `IView`).
+    * **Presenter:** Handles UI logic, interacts with Model, updates View through its interface. Has a one-to-one relationship with the View.
+    * **Pros:** Better separation of concerns than MVC, View is easily testable (mockable interface), Presenter is pure Java/Kotlin and easily testable.
+    * **Cons:** Presenter can still become large, tight coupling between View and Presenter interfaces, potential boilerplate for interfaces.
+
+* **MVVM (Model-View-ViewModel):**
+    * **Model:** Data logic.
+    * **View:** UI (active, observes ViewModel).
+    * **ViewModel:** Exposes data from Model to View via observable streams (`LiveData`, `StateFlow`), handles UI logic, receives user events. No direct reference to View.
+    * **Pros:** Excellent separation, ViewModel is lifecycle-aware (Android Architecture Components), View is easily testable (mock ViewModel), less boilerplate than MVP due to data binding.
+    * **Cons:** Debugging data flow can be harder with complex data bindings, sometimes hard to know where to put specific logic.
+
+* **MVI (Model-View-Intent):**
+    * **Model:** Represents the *entire state* of the application (immutable state).
+    * **View:** Displays the current state from the Model, sends user actions (Intents) to the Intent processor.
+    * **Intent:** A user action or event.
+    * **Reducer/Processor:** Receives Intents, processes them (often with side effects like network calls), and produces new states.
+    * **Pros:** Unidirectional data flow (single source of truth), explicit state management, excellent for debugging (time-travel debugging), highly testable.
+    * **Cons:** Can have more boilerplate for simple screens, handling complex state can be verbose, learning curve.
+```
+
+162. **What is Clean Architecture and its importance?**
+     Clean Architecture, popularized by Robert C. Martin (Uncle Bob), is an architectural philosophy that advocates for a strict separation of concerns into concentric layers, aiming to create systems that are independent of frameworks, databases, and UI.
+     **Layers (from innermost to outermost):**
+     1\.  **Entities:** Core business rules (pure objects, no framework dependencies).
+     2\.  **Use Cases (Interactors):** Application-specific business rules, orchestrate entities, independent of UI/DB.
+     3\.  **Interface Adapters:** Convert data between Use Cases and external layers (e.g., Presenters, Gateways, DAOs).
+     4\.  **Frameworks & Devices:** UI (Activities, Fragments), Databases (Room), Web (Retrofit), etc.
+     **Importance:**
+     \* **Independence:** Independent of UI, database, frameworks, external agencies. This makes components highly portable.
+     \* **Testability:** Core business logic (Entities, Use Cases) can be tested easily without needing Android framework or database.
+     \* **Maintainability:** Changes in one layer don't necessarily affect others.
+     \* **Flexibility:** Easier to swap out external dependencies (e.g., change from SQLite to Realm, or Retrofit to Ktor).
+     \* **Scalability:** Well-suited for large, complex applications that need to evolve over time.
+
+163. **What is MVI architecture and its core concepts?**
+     MVI (Model-View-Intent) is a reactive and unidirectional data flow architectural pattern that emphasizes a single source of truth for the application state.
+     **Core Concepts:**
+     \* **Intent:** Represents a user action or an event from the UI (e.g., "Click button," "Load data"). These are the only inputs to the system.
+     \* **Model (State):** Represents the *entire, immutable state* of the application or a specific screen at any given time. It's a single, immutable data class that holds all the necessary information for the UI to render.
+     \* **View:** A passive component responsible for rendering the current `Model` (state) and emitting `Intent`s based on user interactions.
+     \* **Processor/Reducer (or State Manager):** Receives the `Intent`s, processes them (which might involve fetching data, performing calculations, or handling side effects), and then creates a *new* `Model` (state) based on the old state and the processed intent. This new state is then passed to the View.
+     \* **Unidirectional Data Flow:** Data flows in one direction: View -\> Intent -\> Processor -\> New State -\> View. This makes state changes predictable and debugging easier.
+
+164. **When might MVI be better than MVVM?**
+     MVI might be better than MVVM in scenarios where:
+     \* **Strict Unidirectional Data Flow is Critical:** If you need absolute certainty about how state changes and why, MVI's explicit, single-flow model is superior.
+     \* **Complex UI State Management:** For screens with very intricate UI states and interactions where it's hard to track state changes with MVVM's potentially multiple `LiveData`s. MVI's single immutable state object simplifies this.
+     \* **Time-Travel Debugging:** MVI's immutable state and explicit intent processing make it easier to implement "time-travel" debugging (replaying actions to see state changes).
+     \* **Event Handling:** MVI makes the distinction between "state" (what to render) and "events" (one-time actions like showing a Toast) clearer.
+     \* **Collaboration/Consistency:** For large teams, the strict patterns of MVI can enforce greater consistency and reduce ambiguity.
+     For simpler screens, MVVM can still be more concise and quicker to implement.
+
+165. **Explain unidirectional data flow concept.**
+     Unidirectional data flow is an architectural principle where data moves in a single, predictable direction throughout the application. It's a core concept in patterns like MVI and Flux/Redux.
+     **Key characteristics:**
+     \* **Single Source of Truth:** The application state (or UI state) is held in one definitive place.
+     \* **Actions/Intents as Input:** User interactions or external events are transformed into "actions" or "intents."
+     \* **Processor/Reducer:** These actions are then processed by a central component (e.g., a reducer or state processor), which takes the current state and the action, and then calculates a *new* state. The old state is never directly modified.
+     \* **State Updates to View:** The new state is then propagated to the UI (View), which re-renders itself based on this new state.
+     **Benefits:**
+     \* **Predictability:** State changes are easy to trace and understand, leading to fewer bugs.
+     \* **Testability:** Each step in the data flow can be tested independently.
+     \* **Debuggability:** Easier to debug as you can track every state transition.
+     \* **Maintainability:** Consistent patterns make the codebase easier to maintain as it grows.
+
+166. **What is the Repository pattern and its role?**
+     The Repository pattern is an architectural pattern that abstracts the way data is retrieved and stored from the actual data sources. It acts as an intermediary layer between the domain/business logic (e.g., Use Cases, ViewModels) and the various data sources (e.g., local database, network API, SharedPreferences, cache).
+     **Its role:**
+     \* **Data Abstraction:** The `ViewModel` or Use Case interacts only with the `Repository` interface, not directly with the underlying data source implementations.
+     \* **Single Source of Truth:** A `Repository` can decide whether to fetch data from the network, local database, or cache, providing a consistent "single source of truth" for data.
+     \* **Separation of Concerns:** Decouples the business logic from data fetching/storage details, making each layer more focused and testable.
+     \* **Offline Support:** Facilitates implementing offline-first strategies by managing data caching and synchronization.
+     \* **Testability:** Allows mocking the `Repository` interface for unit testing `ViewModel`s or Use Cases without needing actual network or database calls.
+
+167. **What is the role of Use Cases in Clean Architecture?**
+     In Clean Architecture (and often in MVVM with a Repository), Use Cases (also called Interactors) represent the application-specific business rules or specific operations your application can perform. They bridge the gap between the higher-level (UI, ViewModel) and lower-level (Repository, data sources) layers.
+     **Their role:**
+     \* **Encapsulate Business Logic:** Each Use Case performs a single, specific business operation (e.g., `GetUserProfileUseCase`, `LoginUserUseCase`, `AddProductToCartUseCase`).
+     \* **Orchestrate Data Flow:** They orchestrate the flow of data between the ViewModel/Presenter and the Repository. A Use Case might call one or more methods on a Repository to get data, apply business rules, and then return a result.
+     \* **Independence:** They are pure Kotlin/Java classes, independent of Android framework dependencies, making them highly testable.
+     \* **Reusability:** A Use Case can be reused by different ViewModels or Presenters if multiple screens require the same business logic.
+
+168. **How do you handle separation of concerns?**
+     Separation of concerns is a design principle that breaks down a complex system into distinct, independent sections, each responsible for a specific concern.
+     In Android development, this is crucial for maintainability, testability, and scalability. It's handled by:
+     \* **Architectural Patterns:** Employing patterns like MVVM, MVP, or Clean Architecture to define clear roles for different layers (e.g., View for UI, ViewModel/Presenter for UI logic, Model/Repository for data, Use Cases for business logic).
+     \* **Modularization:** Breaking the app into separate modules (e.g., `:app`, `:feature:auth`, `:data`, `:domain`) where each module has a specific responsibility and limited dependencies.
+     \* **Dependency Injection:** Using libraries like Hilt or Koin to inject dependencies (e.g., `Repository` into `ViewModel`), which loosens coupling between components.
+     \* **Single Responsibility Principle (SRP):** Ensuring that each class or module has only one reason to change.
+     \* **Encapsulation:** Hiding internal implementation details of a component and exposing only a well-defined public interface.
+     \* **Lifecycle Awareness:** Using Android Architecture Components (`ViewModel`, `LiveData`) to manage UI state separately from `Activity`/`Fragment` lifecycle.
+
+169. **What is Hexagonal Architecture?**
+     Hexagonal Architecture (also known as Ports and Adapters architecture) is an architectural pattern that focuses on creating loosely coupled application components that are easily interchangeable. It aims to isolate the core business logic (the "domain" or "application" layer) from external concerns like the UI, databases, and third-party services.
+     **Core Idea:** The core business logic resides in the center "hexagon." It communicates with the outside world through well-defined "ports." "Adapters" then connect these ports to specific external technologies.
+     \* **Ports:** Interfaces that define how the core logic interacts with external systems (e.g., `UserRepository` interface).
+     \* **Adapters:** Implementations of the ports that connect to concrete technologies (e.g., `RoomUserRepository` implementation, `RetrofitApiAdapter`).
+     **Benefits:**
+     \* **High Testability:** The core business logic is completely isolated and can be unit tested without requiring a database, UI, or network.
+     \* **Technology Agnostic:** Easily swap out databases, UI frameworks, or third-party services without affecting the core logic.
+     \* **Maintainability:** Clear boundaries and interfaces make the system easier to understand and evolve.
+     Clean Architecture in Android often shares many principles with Hexagonal Architecture.
+
+170. **How do you implement the Observer pattern in Android?**
+     The Observer pattern is a software design pattern where an object (the "subject" or "observable") maintains a list of its dependents (the "observers") and notifies them automatically of any state changes, usually by calling one of their methods.
+     In Android, it's commonly implemented using:
+     \* **`LiveData` (Recommended):** The primary mechanism from Android Jetpack. `LiveData` is an observable data holder that is lifecycle-aware.
+
+       * **Subject:** A `MutableLiveData` object in a `ViewModel`.
+       * **Observer:** An `Activity` or `Fragment` calls `observe()` on the `LiveData` to receive updates.
+       * **Benefits:** Automatically manages subscriptions based on lifecycle, preventing memory leaks.
+
+     <!-- end list -->
+
+     ```kotlin
+     // ViewModel
+     val myData: MutableLiveData<String> = MutableLiveData()
+     fun updateData(newData: String) { myData.value = newData }
+
+     // Activity/Fragment
+     viewModel.myData.observe(viewLifecycleOwner) { data ->
+         textView.text = data
+     }
+     ```
+
+<!-- end list -->
+
+````
+* **Kotlin `Flow` (Recommended with Coroutines):** For reactive streams and more advanced asynchronous data handling.
+    * **Subject:** A `StateFlow` or `SharedFlow` in a `ViewModel`.
+    * **Observer:** The `Activity`/`Fragment` collects values from the `Flow` within a coroutine.
+    ```kotlin
+    // ViewModel
+    private val _myData = MutableStateFlow("Initial")
+    val myData: StateFlow<String> = _myData.asStateFlow()
+    fun updateData(newData: String) { _myData.value = newData }
+
+    // Activity/Fragment
+    lifecycleScope.launch {
+        viewModel.myData.collect { data ->
+            textView.text = data
+        }
+    }
+    ```
+* **RxJava/RxKotlin (Third-party):** A powerful reactive programming library, offering `Observable`, `Flowable`, `Subject` types for creating observable streams.
+* **Custom Interfaces/Listeners:** Define a listener interface in your subject, and implementing classes register themselves as listeners. The subject then calls the listener methods on state changes. This is more manual but foundational.
+````
